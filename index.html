@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Crop</title>
+  <style>
+    body {
+      margin: 0;
+      background: #9A9597;
+    }
+
+    svg {
+      display: block;
+      position: fixed;
+      top:0;
+      left: 0;
+      z-index: 9999;
+      opacity: 0;
+    }
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="Header">
+    <div class="Logo-wrap">
+      <div class="Logo"></div>
+    </div>
+    <h1 class="Header-title">Remove blank space from around your favorite SVGs.</h1>
+  </header>
+  <main id="drop_zone">
+    <div class="MainContent">
+      <form>
+        Drop SVG <br/> or <br/> <label for="myfile">upload</label> here
+        <input type="file" id="myfile" name="myfile" accept=".svg">
+      </form>
+      <p class="DropText">Drop it!</p>
+    </div>
+    <div class="ButtonWrap"></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+
+</html>
