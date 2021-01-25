@@ -25,10 +25,15 @@
       this.svg = null;
       const svg = document.querySelector('svg');
       svg && mainElement.removeChild(svg);
-      const textarea = document.querySelector('textarea');
-      textarea && mainElement.removeChild(textarea);
-      const download = document.querySelector('a[download]')
-      download && mainElement.removeChild(download);
+
+      const copyInput = mainElement.querySelector('.CopyInput');
+      copyInput && mainElement.removeChild(copyInput);
+
+      const downloadButton = buttonWrapElem.querySelector('a')
+      downloadButton && buttonWrapElem.removeChild(downloadButton);
+
+      const copyButton = buttonWrapElem.querySelector('button')
+      copyButton && buttonWrapElem.removeChild(copyButton);
 
     }
 
