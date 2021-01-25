@@ -61,8 +61,10 @@
       buttonWrapElem.appendChild(a);
     }
 
-    removeViewBox() {
+    removeAttributes() {
       this.svg.removeAttribute('viewBox');
+      this.svg.removeAttribute('width');
+      this.svg.removeAttribute('height');
     }
 
     filterSVGToVisibleElements(svg) {
@@ -129,7 +131,7 @@
     }
 
     render() {
-      this.removeViewBox();
+      this.removeAttributes();
       this.getCoords();
       this.setNewAttributes();
       this.createCopyInput();
