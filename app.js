@@ -2,7 +2,7 @@
   // USER: Set either a width OR height (will scale evenly)
   const WIDTH = null;
   const HEIGHT = null;
-  const invisibleElems = ['svg', 'text', 'defs', 'style', 'title', 'desc'];
+  const invisibleElems = ['foreignObject', 'svg', 'text', 'defs', 'style', 'title', 'desc'];
   const mainElement = document.querySelector('.MainContent');
   const buttonWrapElem = document.querySelector('.ButtonWrap');
 
