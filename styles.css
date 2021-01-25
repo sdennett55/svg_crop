@@ -15,12 +15,26 @@ body {
   height: 100%;
 }
 
+svg {
+  display: block;
+  position: fixed;
+  top:0;
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  margin-bottom: 1em;
+  outline: 1px dashed black;
+  width: 100px;
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: 'source_code_proregular';
   font-size: 16px;
+  margin: 0;
+  background: #9A9597;
 }
 
 .Logo {
@@ -96,6 +110,7 @@ main.is-hovered {
   left: 50%;
   transform: translate(-50%, -50%);
   margin:0;
+  pointer-events: none;
 }
 .is-hovered .DropText {
   display: block;
@@ -133,20 +148,20 @@ label:focus {
   flex-grow: 1;
 }
 
-svg {
-  margin-bottom: 1em;
-  outline: 1px dashed black;
-}
-
 .ButtonWrap:not(:empty) {
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 a[download],
 .CopyButton {
+  display: inline-block;
   font-size: 1em;
   margin: 0 .5em;
-  height: 100%;
+  height: 50px;
+  line-height: 50px;
+  margin-top: 1em;
+  transition: background-color .25s;
+  cursor: pointer;
 }
 a[download] {
   color: inherit;
@@ -156,6 +171,10 @@ a[download] {
   color: #fff;
   padding: 0 .5em;
 }
+a[download]:hover,
+a[download]:focus {
+  background-color: #CC4F60;
+}
 .CopyButton {
   -webkit-appearance: none;
   appearance: none;
@@ -164,4 +183,8 @@ a[download] {
   color: #fff;
   padding: 0 .5em;
   background: #7298A0;
+}
+.CopyButton:hover,
+.CopyButton:focus {
+  background-color: #66B0AE;
 }

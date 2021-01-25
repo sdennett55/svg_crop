@@ -1,6 +1,6 @@
 (function () {
   // USER: Set either a width OR height (will scale evenly)
-  const WIDTH = 100;
+  const WIDTH = null;
   const HEIGHT = null;
   const invisibleElems = ['svg', 'text', 'defs', 'style', 'title', 'desc'];
   const mainElement = document.querySelector('.MainContent');
@@ -8,8 +8,8 @@
 
   class CroppedSVG {
     constructor(svg, width, height) {
-      this.width = width || 100;
-      this.height = height || null;
+      this.width = width;
+      this.height = height;
       this.coords = {
         top: Infinity,
         left: Infinity,
@@ -56,7 +56,7 @@
 
       var a = document.createElement('a');
       a.href = imgSource;
-      a.setAttribute('download', 'whatever.svg');
+      a.setAttribute('download', 'cropped.svg');
       a.textContent = 'Download'
       buttonWrapElem.appendChild(a);
     }
@@ -89,14 +89,10 @@
           right: newRight
         } = x.getBoundingClientRect();
 
-        // console.log(x.id, {newTop, newLeft, newBottom, newRight})
-
         if (newTop < this.coords.top) {
           this.coords.top = newTop;
         }
-        // if 0 < 10
         if (newLeft < this.coords.left) {
-          // console.log('wtf', newLeft, this.coords.left);
           this.coords.left = newLeft;
         }
         if (newRight > this.coords.right) {
@@ -108,8 +104,12 @@
       });
     }
 
+    static formatViewBoxNum(num) {
+      return num.toFixed(2) * 1;
+    }
+
     setNewAttributes() {
-      this.svg.setAttribute('viewBox', `${this.coords.left.toFixed(2)} ${this.coords.top.toFixed(2)} ${(this.coords.right - this.coords.left).toFixed(2)} ${(this.coords.bottom - this.coords.top).toFixed(2)}`);
+      this.svg.setAttribute('viewBox', `${CroppedSVG.formatViewBoxNum(this.coords.left)} ${CroppedSVG.formatViewBoxNum(this.coords.top)} ${CroppedSVG.formatViewBoxNum(this.coords.right - this.coords.left)} ${CroppedSVG.formatViewBoxNum(this.coords.bottom - this.coords.top)}`);
 
       if (WIDTH) {
         this.svg.setAttribute('width', WIDTH);
