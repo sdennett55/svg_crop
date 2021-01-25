@@ -179,7 +179,7 @@
 
     onFileInputChange() {
       const file = this.loadFileInput.files[0];
-
+      CroppedSVG.deleteExisting();
       Form.handleFile(file);
     }
 
