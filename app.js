@@ -183,7 +183,7 @@
       const file = this.loadFileInput.files[0];
       CroppedSVG.deleteExisting();
       Form.handleFile(file);
-      gtag('event', 'uploaded SVG via input', file.name);
+      gtag('event', 'uploaded SVG via input', {'event_label': file.name});
     }
 
     static copyToClipboard() {
@@ -229,7 +229,7 @@
         if (ev.dataTransfer.items[0].kind === 'file') {
           var file = ev.dataTransfer.items[0].getAsFile();
           Form.handleFile(file);
-          gtag('event', 'uploaded SVG via drop', file.name);
+          gtag('event', 'uploaded SVG via drop', {'event_label': file.name});
         }
       }
     }
