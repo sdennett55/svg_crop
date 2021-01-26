@@ -13,8 +13,8 @@
       this.coords = {
         top: Infinity,
         left: Infinity,
-        bottom: -Infinity,
         right: -Infinity,
+        bottom: -Infinity,
       }
       this.svg = svg;
 
@@ -34,7 +34,6 @@
 
       const copyButton = buttonWrapElem.querySelector('button')
       copyButton && buttonWrapElem.removeChild(copyButton);
-
     }
 
     download() {
@@ -85,11 +84,14 @@
     getCoords() {
       this.filterSVGToVisibleElements(this.svg).forEach((x, index, arr) => {
         const {
-          top: newTop,
-          left: newLeft,
-          bottom: newBottom,
-          right: newRight
-        } = x.getBoundingClientRect();
+          y: newTop,
+          x: newLeft,
+          width,
+          height,
+        } = x.getBBox({fill: true, stroke: true});
+
+        const newBottom = height + newTop; 
+        const newRight = width + newLeft;
 
         if (newTop < this.coords.top) {
           this.coords.top = newTop;
@@ -136,8 +138,6 @@
       this.setNewAttributes();
       this.createCopyInput();
       this.download();
-      this.svg.style.position = 'static';
-      this.svg.style.opacity = '1';
     }
   }
 
@@ -188,7 +188,6 @@
 
     static copyToClipboard() {
       const copyText = document.querySelector('.CopyInput');
-      console.log('yoyoyoy', copyText)
       if (copyText) {
         copyText.select();
         copyText.setSelectionRange(0, 99999);
