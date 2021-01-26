@@ -77,7 +77,7 @@
       }
 
 
-      const result = [svg].reduce(flatten, []).filter(elem => elem.tagName && !invisibleElems.includes(elem.tagName));
+      const result = [svg].reduce(flatten, []).filter(elem => elem.tagName && !invisibleElems.includes(elem.tagName) && (elem.getBoundingClientRect().width || elem.getBoundingClientRect().height));
 
       return result;
     }

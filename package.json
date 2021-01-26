@@ -1,0 +1,12 @@
+{
+  "name": "svg_crop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/sdennett55/svg_crop.git",
+  "author": "sdennett55@gmail.com <sdennett55@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^6.3.0",
+    "cypress-file-upload": "^5.0.2"
+  }
+}
