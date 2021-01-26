@@ -164,6 +164,7 @@ a[download],
   margin-top: 1em;
   transition: background-color .25s;
   cursor: pointer;
+  font: inherit;
 }
 a[download] {
   color: inherit;
