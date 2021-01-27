@@ -6,6 +6,39 @@
   const mainElement = document.querySelector('.MainContent');
   const buttonWrapElem = document.querySelector('.ButtonWrap');
 
+  class ErrorMessage {
+    constructor(message) {
+      this.message = message;
+      this.timeout = null;
+      this.errorElem = null;
+
+      this.render();
+    }
+
+    delete() {
+      clearTimeout(this.timeout);
+      this.errorElem = document.querySelector('.ErrorMessage');
+      const existingErrorMsg = document.body.querySelector('.ErrorMessage');
+      if (existingErrorMsg) {
+        document.body.removeChild(existingErrorMsg);
+      }
+      this.errorElem = null;
+    }
+
+    render() {
+      this.delete();
+
+      const errorDiv = document.createElement('div');
+      errorDiv.classList.add('ErrorMessage');
+      errorDiv.innerText = this.message;
+      document.body.appendChild(errorDiv);
+      this.errorElem = errorDiv;
+      this.timeout = setTimeout(() => {
+        document.body.removeChild(this.errorElem);
+      }, 5000);
+    }
+  }
+
   class CroppedSVG {
     constructor(svg, width, height) {
       this.width = width;
@@ -149,7 +182,7 @@
 
     static handleFile(file) {
       if (!file.name.endsWith('.svg')) {
-        return console.error(`Please provide an svg file with the .svg extension in the filename.`)
+        return new ErrorMessage(`Please provide an svg file with the .svg extension in the filename.`);
       }
 
       const reader = new FileReader();
@@ -162,7 +195,7 @@
         var svgElem = parser.parseFromString(svg, "image/svg+xml").documentElement;
 
         if (svgElem.tagName === 'html') {
-          return console.error(`The SVG is malformed. Please try again.`)
+          return new ErrorMessage(`The SVG is malformed. Please try again.`);
         } else {
           mainElement.insertBefore(svgElem, document.querySelector('form'))
         }
@@ -222,7 +255,7 @@
 
       if (ev.dataTransfer.items) {
         if (ev.dataTransfer.items.length > 1) {
-          return console.error(`Please provide only one SVG file.`);
+          return new ErrorMessage(`Please provide only one SVG file.`);
         }
 
         if (ev.dataTransfer.items[0].kind === 'file') {
