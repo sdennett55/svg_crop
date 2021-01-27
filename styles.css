@@ -17,6 +17,11 @@ body {
 
 svg {
   display: block;
+  position: fixed;
+  top:0;
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
   margin-bottom: 1em;
   outline: 1px dashed black;
   width: 100px;
@@ -160,6 +165,7 @@ a[download],
   margin-top: 1em;
   transition: background-color .25s;
   cursor: pointer;
+  font: inherit;
 }
 a[download] {
   color: inherit;
