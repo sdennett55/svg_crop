@@ -165,6 +165,10 @@
     }
 
     setNewAttributes() {
+      if (!this.svg.hasAttribute('xmlns')) {
+        this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      }
+
       this.svg.setAttribute(
         'viewBox',
         `${CroppedSVG.formatViewBoxNum(
