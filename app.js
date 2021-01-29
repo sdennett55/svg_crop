@@ -42,7 +42,9 @@
       document.body.appendChild(errorDiv);
       this.errorElem = errorDiv;
       this.timeout = setTimeout(() => {
-        document.body.removeChild(this.errorElem);
+        if (this.errorElem) {
+          document.body.removeChild(this.errorElem);
+        }
       }, 5000);
     }
   }
@@ -118,11 +120,13 @@
       const result = [svg]
         .reduce(flatten, [])
         .filter(
-          (elem) =>
-            elem.tagName &&
-            !invisibleElems.includes(elem.tagName) &&
-            elem.getBoundingClientRect().width &&
+          (elem) => {
+            return elem.tagName &&
+              !invisibleElems.includes(elem.tagName) &&
+              elem.getBoundingClientRect().width &&
+              !elem.parentElement.hasAttribute('mask') &&
               elem.getBoundingClientRect().height && (getComputedStyle(elem).stroke !== 'none' || getComputedStyle(elem).fill !== 'none')
+          }
         );
 
       return result;

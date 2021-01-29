@@ -24,8 +24,8 @@ svg {
   opacity: 0;
   margin-bottom: 1em;
   outline: 1px dashed black;
-  width: 100px;
-  height: auto;
+  height: 100px;
+  width: auto;
 }
 
 body {
