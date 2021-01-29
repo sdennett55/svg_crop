@@ -117,12 +117,22 @@
 
     getCoords() {
       this.filterSVGToVisibleElements(this.svg).forEach((x, index, arr) => {
-        const {
+        let {
           top: newTop,
           left: newLeft,
           bottom: newBottom,
           right: newRight
         } = x.getBoundingClientRect();
+
+        const stroke = getComputedStyle(x)['stroke'];
+        const strokeWidth = Number(getComputedStyle(x)['stroke-width'].replace('px', ''));
+
+        if (stroke !== "none") {
+          newTop = newTop - (strokeWidth / 2);
+          newLeft = newLeft - (strokeWidth / 2);
+          newBottom = newBottom + (strokeWidth / 2);
+          newRight = newRight + (strokeWidth / 2);
+        }
 
         if (newTop < this.coords.top) {
           this.coords.top = newTop;
