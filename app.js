@@ -3,6 +3,7 @@
   const WIDTH = null;
   const HEIGHT = null;
   const invisibleElems = [
+    'g',
     'foreignObject',
     'svg',
     'text',
@@ -120,8 +121,8 @@
           (elem) =>
             elem.tagName &&
             !invisibleElems.includes(elem.tagName) &&
-            (elem.getBoundingClientRect().width ||
-              elem.getBoundingClientRect().height)
+            elem.getBoundingClientRect().width &&
+              elem.getBoundingClientRect().height && (getComputedStyle(elem).stroke !== 'none' || getComputedStyle(elem).fill !== 'none')
         );
 
       return result;
