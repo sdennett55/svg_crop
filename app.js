@@ -3,6 +3,7 @@
   const WIDTH = null;
   const HEIGHT = null;
   const invisibleElems = [
+    'defs',
     'g',
     'foreignObject',
     'svg',
@@ -17,14 +18,12 @@
   class ErrorMessage {
     constructor(message) {
       this.message = message;
-      this.timeout = null;
       this.errorElem = null;
 
       this.render();
     }
 
     delete() {
-      clearTimeout(this.timeout);
       this.errorElem = document.querySelector('.ErrorMessage');
       const existingErrorMsg = document.body.querySelector('.ErrorMessage');
       if (existingErrorMsg) {
@@ -35,17 +34,11 @@
 
     render() {
       this.delete();
-
       const errorDiv = document.createElement('div');
       errorDiv.classList.add('ErrorMessage');
       errorDiv.innerText = this.message;
       document.body.appendChild(errorDiv);
       this.errorElem = errorDiv;
-      this.timeout = setTimeout(() => {
-        if (this.errorElem) {
-          document.body.removeChild(this.errorElem);
-        }
-      }, 5000);
     }
   }
 
@@ -125,6 +118,7 @@
               !invisibleElems.includes(elem.tagName) &&
               elem.getBoundingClientRect().width &&
               !elem.parentElement.hasAttribute('mask') &&
+              elem.parentElement.tagName !== 'defs' &&
               elem.getBoundingClientRect().height && (getComputedStyle(elem).stroke !== 'none' || getComputedStyle(elem).fill !== 'none')
           }
         );
