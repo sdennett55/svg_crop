@@ -165,10 +165,6 @@
     }
 
     setNewAttributes() {
-      if (!this.svg.hasAttribute('xmlns')) {
-        this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-      }
-
       this.svg.setAttribute(
         'viewBox',
         `${CroppedSVG.formatViewBoxNum(
@@ -228,7 +224,11 @@
       reader.readAsText(file);
 
       reader.onloadend = function (e) {
-        const svg = e.target.result;
+        let svg = e.target.result;
+
+        if(!svg.includes('xmlns')) {
+          svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+        }
 
         var parser = new DOMParser();
         var svgElem = parser.parseFromString(svg, 'image/svg+xml')
@@ -260,7 +260,6 @@
 
     static copyToClipboard() {
       const copyText = document.querySelector('.CopyInput');
-      console.log('yoyoyoy', copyText);
       if (copyText) {
         copyText.select();
         copyText.setSelectionRange(0, 99999);
