@@ -7,7 +7,6 @@
     'g',
     'foreignObject',
     'svg',
-    'text',
     'style',
     'title',
     'desc',
@@ -110,18 +109,18 @@
         return ops;
       }
 
-      const result = [svg]
-        .reduce(flatten, [])
-        .filter(
-          (elem) => {
-            return elem.tagName &&
-              !invisibleElems.includes(elem.tagName) &&
-              elem.getBoundingClientRect().width &&
-              !elem.parentElement.hasAttribute('mask') &&
-              elem.parentElement.tagName !== 'defs' &&
-              elem.getBoundingClientRect().height && (getComputedStyle(elem).stroke !== 'none' || getComputedStyle(elem).fill !== 'none')
-          }
+      const result = [svg].reduce(flatten, []).filter((elem) => {
+        return (
+          elem.tagName &&
+          !invisibleElems.includes(elem.tagName) &&
+          (elem.getBoundingClientRect().width ||
+            elem.getBoundingClientRect().height) &&
+          !elem.parentElement.hasAttribute('mask') &&
+          elem.parentElement.tagName !== 'defs' &&
+          (getComputedStyle(elem).stroke !== 'none' ||
+            getComputedStyle(elem).fill !== 'none')
         );
+      });
 
       return result;
     }
@@ -136,13 +135,15 @@
         } = x.getBoundingClientRect();
 
         const stroke = getComputedStyle(x)['stroke'];
-        const strokeWidth = Number(getComputedStyle(x)['stroke-width'].replace('px', ''));
+        const strokeWidth = Number(
+          getComputedStyle(x)['stroke-width'].replace('px', '')
+        );
 
-        if (stroke !== "none") {
-          newTop = newTop - (strokeWidth / 2);
-          newLeft = newLeft - (strokeWidth / 2);
-          newBottom = newBottom + (strokeWidth / 2);
-          newRight = newRight + (strokeWidth / 2);
+        if (stroke !== 'none') {
+          newTop = newTop - strokeWidth / 2;
+          newLeft = newLeft - strokeWidth / 2;
+          newBottom = newBottom + strokeWidth / 2;
+          newRight = newRight + strokeWidth / 2;
         }
 
         if (newTop < this.coords.top) {
@@ -226,7 +227,7 @@
       reader.onloadend = function (e) {
         let svg = e.target.result;
 
-        if(!svg.includes('xmlns')) {
+        if (!svg.includes('xmlns')) {
           svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
         }
 
@@ -255,7 +256,7 @@
       const file = this.loadFileInput.files[0];
       CroppedSVG.deleteExisting();
       Form.handleFile(file);
-      gtag('event', 'uploaded SVG via input', { event_label: file.name });
+      gtag('event', 'uploaded SVG via input', {event_label: file.name});
     }
 
     static copyToClipboard() {
@@ -305,7 +306,7 @@
         if (ev.dataTransfer.items[0].kind === 'file') {
           var file = ev.dataTransfer.items[0].getAsFile();
           Form.handleFile(file);
-          gtag('event', 'uploaded SVG via drop', { event_label: file.name });
+          gtag('event', 'uploaded SVG via drop', {event_label: file.name});
         }
       }
     }
