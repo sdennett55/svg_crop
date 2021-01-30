@@ -27,7 +27,6 @@ svg {
   height: 100px;
   max-width: 100%;
   width: auto;
-  cursor: zoom-in;
   pointer-events: none;
   background-color: #fff;
   outline: 2px dashed #000;
@@ -48,6 +47,10 @@ svg {
 .EnhanceButton:focus,
 .ColorToggleButton:focus {
   outline: 0;
+}
+
+.EnhanceButton {
+  cursor: zoom-in;
 }
 
 .PreviewSection {
@@ -176,7 +179,7 @@ main {
   justify-content: center;
   text-align: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #fff;
   border-radius: 8px;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%237298A0' stroke-width='6' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
   padding: 2em;
@@ -323,6 +326,7 @@ a[download]:focus {
   text-align: center;
   color: #fff;
   padding: 0 2em;
+  font-size: .85em;
 }
 .Footer-link {
   cursor: pointer;
