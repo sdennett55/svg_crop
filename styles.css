@@ -30,6 +30,7 @@ svg {
   pointer-events: none;
   background-color: #fff;
   outline: 2px dashed #000;
+  transition: background-color .25s, outline .25s;
 }
 
 .EnhanceButton,
@@ -71,6 +72,7 @@ svg {
   border-radius: 4px;
   background-color: #000;
   cursor: pointer;
+  transition: background-color .25s, border-color .25s;
 }
 .ColorToggleButton::after {
   content: '';
@@ -82,6 +84,7 @@ svg {
   border: 1px solid #000;
   border-radius: 4px;
   background-color: #fff;
+  transition: background-color .25s, border-color .25s;
 }
 
 .is-blackBg .ColorToggleButton {
@@ -96,7 +99,7 @@ svg {
 
 .is-enhanced svg {
   position: fixed !important;
-  outline: 1px dashed #fff;
+  outline: 2px dashed #fff;
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;

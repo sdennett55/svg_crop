@@ -242,10 +242,12 @@
       function handleColorToggle(e) {
         mainElement.classList.toggle('is-blackBg');
 
-        if (e.target.textContent === 'Switch to black') {
-          e.target.textContent = 'Switch to white';
+        if (e.target.textContent === 'Preview on black') {
+          e.target.textContent = 'Preview on white';
+          e.target.setAttribute('title', `Preview on white`);
         } else {
-          e.target.textContent = 'Switch to black';
+          e.target.textContent = 'Preview on black';
+          e.target.setAttribute('title', `Preview on black`);
         }
       }
 
@@ -275,7 +277,8 @@
           // add color toggle
           const blackColorBtn = document.createElement('button');
           blackColorBtn.classList.add('ColorToggleButton');
-          blackColorBtn.textContent = `Switch to black`;
+          blackColorBtn.textContent = `Preview on black`;
+          blackColorBtn.setAttribute('title', `Preview on black`);
           blackColorBtn.addEventListener('click', handleColorToggle);
           previewSectionElem.appendChild(blackColorBtn);
         }
