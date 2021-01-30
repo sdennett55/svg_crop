@@ -126,7 +126,7 @@ svg {
 }
 
 .is-blackBg svg {
-  outline: 2px dashed #fff;
+  outline: 2px dashed #000;
   background-color: #000;
 }
 
