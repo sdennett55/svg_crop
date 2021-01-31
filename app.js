@@ -82,7 +82,7 @@
         previewSectionElem.removeChild(colorToggleButtonElem);
     }
 
-    download() {
+    addDownloadButton() {
       if (!this.svg) {
         return;
       }
@@ -106,6 +106,15 @@
       );
       a.textContent = 'Download';
       buttonWrapElem.appendChild(a);
+    }
+
+    addCopyToClipboardButton() {
+      // Add "Copy to Clipboard" Button
+      const buttonElem = document.createElement('button');
+      buttonElem.textContent = 'Copy to clipboard';
+      buttonElem.classList.add('CopyButton');
+      buttonElem.addEventListener('click', Form.copyToClipboard);
+      buttonWrapElem.appendChild(buttonElem);
     }
 
     removeAttributes() {
@@ -191,6 +200,9 @@
         )} ${CroppedSVG.formatViewBoxNum(this.coords.bottom - this.coords.top)}`
       );
 
+      this.svg.style.position = 'static';
+      this.svg.style.opacity = '1';
+
       if (WIDTH) {
         this.svg.setAttribute('width', WIDTH);
         this.svg.removeAttribute('height');
@@ -200,7 +212,7 @@
       }
     }
 
-    createCopyInput() {
+    addCopyInput() {
       const copyInput = document.createElement('input');
       copyInput.classList.add('CopyInput');
       copyInput.ariaHidden = true;
@@ -208,14 +220,56 @@
       mainElement.appendChild(copyInput);
     }
 
+    addSvg() {
+      function handleImageEnhance(e) {
+        e.target.classList.toggle('is-enhanced');
+      }
+
+      // Add SVG to the screen inside the enhance button
+      const enhanceBtn = document.createElement('button');
+      enhanceBtn.classList.add('EnhanceButton');
+      enhanceBtn.addEventListener('click', handleImageEnhance);
+      enhanceBtn.appendChild(this.svg);
+      previewSectionElem.appendChild(enhanceBtn);
+    }
+
+    addColorToggle() {
+      function handleColorToggle(e) {
+        mainElement.classList.toggle('is-blackBg');
+
+        if (e.target.textContent === 'Preview on black') {
+          e.target.children[0].textContent = 'Preview on white';
+          e.target.children[0].setAttribute('title', `Preview on white`);
+        } else {
+          e.target.children[0].textContent = 'Preview on black';
+          e.target.children[0].setAttribute('title', `Preview on black`);
+        }
+      }
+
+      // add a11y text
+      const a11yText = document.createElement('span');
+      a11yText.classList.add('AccessibleText');
+      a11yText.textContent = `Preview on black`;
+      a11yText.setAttribute('title', `Preview on black`);
+
+      // add color toggle button
+      const blackColorBtn = document.createElement('button');
+      blackColorBtn.classList.add('ColorToggleButton');
+      blackColorBtn.appendChild(a11yText);
+      blackColorBtn.addEventListener('click', handleColorToggle);
+      previewSectionElem.appendChild(blackColorBtn);
+    }
+
     render() {
+      this.addSvg();
       this.removeAttributes();
       this.getCoords();
       this.setNewAttributes();
-      this.createCopyInput();
-      this.download();
-      this.svg.style.position = 'static';
-      this.svg.style.opacity = '1';
+      
+      this.addColorToggle();
+      this.addCopyInput();
+      this.addDownloadButton();
+      this.addCopyToClipboardButton();
     }
   }
 
@@ -235,22 +289,6 @@
         );
       }
 
-      function handleImageEnhance() {
-        mainElement.classList.toggle('is-enhanced');
-      }
-
-      function handleColorToggle(e) {
-        mainElement.classList.toggle('is-blackBg');
-
-        if (e.target.textContent === 'Preview on black') {
-          e.target.textContent = 'Preview on white';
-          e.target.setAttribute('title', `Preview on white`);
-        } else {
-          e.target.textContent = 'Preview on black';
-          e.target.setAttribute('title', `Preview on black`);
-        }
-      }
-
       const reader = new FileReader();
       reader.readAsText(file);
 
@@ -267,30 +305,9 @@
 
         if (svgElem.tagName === 'html') {
           return new ErrorMessage(`The SVG is malformed. Please try again.`);
-        } else {
-          const enhanceBtn = document.createElement('button');
-          enhanceBtn.classList.add('EnhanceButton');
-          enhanceBtn.addEventListener('click', handleImageEnhance);
-          enhanceBtn.appendChild(svgElem);
-          previewSectionElem.appendChild(enhanceBtn);
-
-          // add color toggle
-          const blackColorBtn = document.createElement('button');
-          blackColorBtn.classList.add('ColorToggleButton');
-          blackColorBtn.textContent = `Preview on black`;
-          blackColorBtn.setAttribute('title', `Preview on black`);
-          blackColorBtn.addEventListener('click', handleColorToggle);
-          previewSectionElem.appendChild(blackColorBtn);
         }
 
         new CroppedSVG(svgElem, file.name);
-
-        // copy svg data to clipboard
-        const buttonElem = document.createElement('button');
-        buttonElem.textContent = 'Copy to clipboard';
-        buttonElem.classList.add('CopyButton');
-        buttonElem.addEventListener('click', Form.copyToClipboard);
-        buttonWrapElem.appendChild(buttonElem);
       };
     }
 
@@ -345,11 +362,14 @@
           return new ErrorMessage(`Please provide only one SVG file.`);
         }
 
-        if (ev.dataTransfer.items[0].kind === 'file') {
-          var file = ev.dataTransfer.items[0].getAsFile();
-          Form.handleFile(file);
-          gtag('event', 'uploaded SVG via drop', {event_label: file.name});
+        for (const eachSvg of ev.dataTransfer.items) {
+          if (ev.dataTransfer.items[0].kind === 'file') {
+            var file = eachSvg.getAsFile();
+            Form.handleFile(file);
+            gtag('event', 'uploaded SVG via drop', {event_label: file.name});
+          }
         }
+
       }
     }
   }

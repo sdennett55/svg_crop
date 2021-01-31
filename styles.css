@@ -65,7 +65,6 @@ svg {
 .ColorToggleButton {
   position: relative;
   font-size: 1rem;
-  color: transparent;
   width: 20px;
   height: 20px;
   border: 1px solid #fff;
@@ -85,6 +84,19 @@ svg {
   border-radius: 4px;
   background-color: #fff;
   transition: background-color .25s, border-color .25s;
+}
+
+.AccessibleText {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
 }
 
 .is-blackBg .ColorToggleButton {
@@ -110,7 +122,7 @@ svg {
   max-height: calc(100% - 2em);
 }
 
-.is-enhanced .EnhanceButton {
+.EnhanceButton.is-enhanced {
   position: fixed;
   top: 0;
   left: 0;
