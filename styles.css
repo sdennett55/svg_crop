@@ -61,6 +61,8 @@ svg {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+.PreviewSection:not(:empty) {
   margin-bottom: 1em;
 }
 .is-showingSvg svg {
