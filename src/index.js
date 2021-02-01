@@ -406,10 +406,9 @@ class Form {
   }
 
   async onFileInputChange(ev) {
-    // const file = this.loadFileInput.files[0];
+    const files = this.loadFileInput.files;
     cleanUpElements();
-    prepareFilesForDownload(ev);
-    gtag('event', 'uploaded SVG via input', { event_label: file.name });
+    prepareFilesForDownload(files, 'uploaded SVG via input');
   }
 
   static copyToClipboard() {
@@ -449,20 +448,20 @@ class DropZone {
   async dropHandler(ev) {
     ev.preventDefault();
     this.dropZone.classList.remove('is-hovered');
-    prepareFilesForDownload(ev);
+    prepareFilesForDownload(ev.dataTransfer.files);
   }
 }
 
-async function prepareFilesForDownload(ev) {
+async function prepareFilesForDownload(files, eventLabel) {
   cleanUpElements();
 
-  if (ev.dataTransfer.files) {
+  if (files) {
     let modifiedSvg;
     let filename;
     let multipleSvgs = [];
     let fileCount = 0;
 
-    for (const eachSvg of [...ev.dataTransfer.files]) {
+    for (const eachSvg of [...files]) {
       if (eachSvg.type === 'image/svg+xml') {
         var file = eachSvg;
         filename = file.name;
@@ -470,7 +469,7 @@ async function prepareFilesForDownload(ev) {
         fileCount++;
         const croppedSvg = new CroppedSVG(modifiedSvg, filename);
         multipleSvgs.push({ svg: croppedSvg.svg, filename: croppedSvg.filename });
-        gtag('event', 'uploaded SVG via drop', { event_label: file.name });
+        gtag('event', eventLabel, { event_label: file.name });
       }
     }
 
