@@ -10,7 +10,7 @@
     "build": "./node_modules/.bin/webpack",
     "start:dev": "webpack serve --open",
     "predeploy": "npm run build",
-    "deploy": "echo 'svgcrop.com' > ./dist/CNAME && gh-pages -d dist"
+    "deploy": "echo svgcrop.com > ./dist/CNAME && gh-pages -d dist"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
