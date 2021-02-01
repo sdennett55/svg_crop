@@ -1,0 +1,389 @@
+@font-face {
+  font-family: 'source_code_proregular';
+  src: url('./fonts/sourcecodepro-regular-webfont.woff2') format('woff2'),
+    url('./fonts/sourcecodepro-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+svg {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  height: 100px;
+  max-width: 100%;
+  width: auto;
+  pointer-events: none;
+  background-color: #fff;
+  outline: 2px dashed #000;
+  transition: background-color .25s, outline .25s;
+}
+
+.EnhanceButton,
+.ColorToggleButton {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  display: block;
+  background-color: transparent;
+  margin: 0;
+  margin-bottom: 1rem;
+  padding: .25em;
+}
+.EnhanceButton:focus,
+.ColorToggleButton:focus {
+  outline: 0;
+}
+
+.EnhanceButton {
+  cursor: zoom-in;
+}
+
+.PreviewSection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+}
+.is-showingSvg svg {
+  position: static;
+  opacity: 1;
+}
+
+.ColorToggleWrap {
+  display: flex;
+  justify-content: center;
+  flex-basis: 100%;
+}
+
+.ColorToggleButton {
+  position: relative;
+  font-size: 1rem;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background-color: #000;
+  cursor: pointer;
+  transition: background-color .25s, border-color .25s;
+}
+.ColorToggleButton::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: background-color .25s, border-color .25s;
+}
+
+.AccessibleText {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+.is-blackBg .ColorToggleButton {
+  background-color: #fff;
+  border-color: #000;
+}
+.is-blackBg .ColorToggleButton::after {
+  background-color: #000;
+  border-color: #fff;
+}
+
+
+.is-enhanced svg {
+  position: fixed !important;
+  outline: 2px dashed #fff;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none;
+  width: calc(100% - 2em);
+  height: auto;
+  max-width: calc(100% - 2em);
+  max-height: calc(100% - 2em);
+}
+
+.EnhanceButton.is-enhanced {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  z-index: 9999;
+  cursor: zoom-out;
+  margin: 0;
+  background: rgba(0, 0, 0, .5);
+}
+
+.is-blackBg svg {
+  outline: 2px dashed #000;
+  background-color: #000;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'source_code_proregular';
+  font-size: 16px;
+  margin: 0;
+  background: #9a9597;
+}
+
+.Logo {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 175.64 27.89'%3E%3Cstyle%3E.st0%7Bfill:%23fff%7D.st3%7Bfill:none;stroke:%23fff;stroke-miterlimit:10%7D%3C/style%3E%3Cpath class='st0' d='M105.53 27.89H91.28l4.09-.99c2.56-.62 4.74-1.98 6.67-4.15l-3.48-2.78c-1.96 2.01-4.13 3.02-6.44 3.02-4.92 0-8.63-3.91-8.63-9.09 0-5.08 3.79-9.06 8.63-9.06 2.25 0 4.37.96 6.31 2.86l3.35-2.91c-1.77-1.92-3.86-3.2-6.23-3.81L91.69 0h13.84v27.89zm-7.2-1h6.21V1h-6.09c1.64.82 3.13 2 4.43 3.51l.32.38-4.82 4.18-.33-.34c-1.83-1.92-3.83-2.89-5.92-2.89-4.28 0-7.63 3.54-7.63 8.06 0 4.61 3.28 8.09 7.63 8.09 2.15 0 4.18-1.02 6.03-3.04l.32-.34 5 4-.33.39c-1.43 1.71-3.05 3.01-4.82 3.89z'/%3E%3Cpath class='st0' d='M93.24 27.89H53.76l4.36-.99c2.72-.61 5.01-2.05 7.02-4.4v-9.49h-9.52v3.66h5.4v4.06l-.15.15c-1.34 1.34-3.48 2.11-5.87 2.11-4.84 0-8.63-4-8.63-9.09 0-5.08 3.79-9.06 8.63-9.06 2.31 0 4.64 1.06 6.33 2.84l3.33-2.89c-1.77-1.92-3.86-3.2-6.23-3.81L54.58 0h38.16L88.9.98c-5.86 1.5-9.95 6.81-9.95 12.91 0 6.24 4.17 11.59 10.13 13l4.16 1zm-32.07-1h24.87c-4.88-2.32-8.09-7.31-8.09-12.99 0-5.58 3.19-10.54 8.02-12.9H61.32c1.64.82 3.13 2 4.43 3.51l.32.38-4.84 4.2-.33-.39c-1.52-1.8-3.73-2.87-5.9-2.87-4.28 0-7.63 3.54-7.63 8.06 0 4.54 3.35 8.09 7.63 8.09 2.03 0 3.85-.61 5.01-1.68v-2.64h-5.4V12h11.52v10.86l-.11.14c-1.43 1.71-3.05 3.01-4.85 3.89zM119.19 27.89h-9.18V17.6h5l4.18 10.29zm-8.18-1h6.7l-3.37-8.29h-3.33v8.29zM114.01 13.59H110V4.92h4.01c2.99 0 4.78 1.63 4.78 4.35 0 2.7-1.78 4.32-4.78 4.32zm-3-1h3.01c2.44 0 3.78-1.18 3.78-3.32 0-2.16-1.34-3.35-3.78-3.35h-3.01v6.67z'/%3E%3Cpath class='st0' d='M140.96 27.89h-16.83l-4.93-11.3.37-.23c2.29-1.43 3.5-3.88 3.5-7.09 0-4.65-2.57-7.74-6.87-8.27l.06-1h24.19l-3.87.98C130.65 2.49 126.5 7.8 126.5 13.9c0 6.23 4.23 11.57 10.29 13l4.17.99zm-16.17-1h8.94a14.298 14.298 0 01-8.22-12.99c0-5.58 3.23-10.54 8.13-12.9H119.6c2.83 1.5 4.48 4.44 4.48 8.27 0 3.35-1.28 6.07-3.61 7.7l4.32 9.92zM9.45 23.14c-2.03 0-3.76-1.07-4.92-3.02L0 23.13V0h9.46L6.85.97c-2.65.98-4.3 3.28-4.3 5.99 0 3.92 3.26 6.09 6.13 8.01 2.29 1.53 4.28 2.85 4.28 4.83 0 1.93-1.48 3.34-3.51 3.34zM4.9 18.68l.25.5c.97 1.91 2.5 2.96 4.29 2.96 1.48 0 2.51-.97 2.51-2.35 0-1.44-1.78-2.62-3.83-4-2.93-1.96-6.57-4.39-6.57-8.84 0-2.4 1.17-4.58 3.11-5.96H1v20.27l3.9-2.58zM56.49 27.89H32.5L41.5 0h14.11l-3.84.98c-5.86 1.5-9.95 6.81-9.95 12.91 0 6.3 4.22 11.65 10.27 13l4.4 1zm-22.61-1h15.09c-4.92-2.3-8.15-7.28-8.15-12.99 0-5.58 3.19-10.54 8.02-12.9h-6.61l-8.35 25.89z'/%3E%3Cpath class='st0' d='M27.75 27.89H8.35l3.59-.98c3.41-.93 5.53-3.69 5.53-7.19 0-4.28-3.6-6.64-6.48-8.54C8.9 9.81 7.1 8.62 7.1 7c0-1.41 1.06-2.47 2.47-2.47 1.02 0 2.02.57 2.85 1.61l2.96-2.62c-.88-1.21-2.01-2.07-3.36-2.55L9.3 0h9.45l9 27.89zm-13.25-1h11.87L18.02 1h-3.77c.86.6 1.6 1.38 2.22 2.33l.23.36-4.45 3.94-.32-.48c-.41-.61-1.25-1.63-2.36-1.63-.86.01-1.47.61-1.47 1.48 0 1.09 1.59 2.13 3.43 3.34 3.09 2.03 6.94 4.55 6.94 9.38 0 3.05-1.5 5.67-3.97 7.17z'/%3E%3Cpath d='M30.15 21.57c.35-2.12 1.19-4.9 1.97-7.55L36.02.51H24.24l3.98 13.51c.73 2.61 1.58 5.43 1.93 7.55z' fill='%23a43365'/%3E%3Cpath class='st0' d='M30.14 24.66l-.49-3.02c-.28-1.74-.92-3.99-1.54-6.17l-.37-1.33L23.57 0h13.11l-4.37 15.12c-.67 2.31-1.37 4.69-1.67 6.52l-.5 3.02zM24.91 1l4.17 14.2c.38 1.33.76 2.69 1.07 3.96.34-1.37.78-2.86 1.2-4.31l4-13.84H24.91zM165.58 13.59h-4.01V4.92h4.01c2.99 0 4.78 1.63 4.78 4.35 0 2.7-1.79 4.32-4.78 4.32zm-3.01-1h3.01c2.44 0 3.78-1.18 3.78-3.32 0-2.16-1.34-3.35-3.78-3.35h-3.01v6.67z'/%3E%3Cpath d='M139.87 5.22c-4.7 0-8.17 3.62-8.17 8.67 0 5.13 3.47 8.71 8.17 8.71 4.66 0 8.13-3.62 8.13-8.71s-3.46-8.67-8.13-8.67z' fill='%237298a0'/%3E%3Cpath class='st0' d='M139.87 23.11c-5.02 0-8.67-3.87-8.67-9.21 0-5.31 3.65-9.17 8.67-9.17 5 0 8.63 3.86 8.63 9.17.01 5.33-3.62 9.21-8.63 9.21zm0-17.39c-4.44 0-7.67 3.44-7.67 8.17 0 4.76 3.23 8.21 7.67 8.21 4.42 0 7.63-3.45 7.63-8.21.01-4.73-3.2-8.17-7.63-8.17zM175.6 27.89h-14.02V17.6h4.86c4.74 0 7.79-2.75 8.17-7.36l1 .04v17.61zm-13.03-1h12.02V14.03c-1.46 2.89-4.36 4.57-8.17 4.57h-3.86v8.29zM174.6 8.3c-.36-4.43-3.02-7.3-6.76-7.3V0c4.24 0 7.36 3.3 7.76 8.22l-1 .08z'/%3E%3Cpath class='st0' d='M157.1 27.89h-18.32l4.15-.99a13.329 13.329 0 0010.28-13c0-6.08-4.14-11.39-10.07-12.91L139.29 0h17.81v27.89zm-11.11-1h10.11V1h-10.01a14.31 14.31 0 018.12 12.9c0 5.66-3.26 10.65-8.22 12.99zM0 22.41h1v.52H0z'/%3E%3Cpath class='st0' d='M12.07 27.89l-5.71-.01c-2.74-.67-5-2.36-6.36-4.78l.87-.49c1.21 2.15 3.22 3.67 5.66 4.28h5.53v1zM6.68 0h5.51v1H6.68zM36.5.64l-.97-.28.99.18zM51.65 0h6.9v1h-6.9zM51.98 26.89h6.26v1h-6.26zM88.96 26.89h6.53v1h-6.53zM88.77 0h6.9v1h-6.9zM105.03 0h11.24v1h-11.24zM136.46 0h6.8v1h-6.8zM136.67 26.89h6.38v1h-6.38z'/%3E%3Cg%3E%3Cpath class='st0' d='M175.6 10.99l-1-.02V8.26l1-.04c.03.34.04.78.04 1.14 0 .35-.02 1.18-.04 1.63z'/%3E%3C/g%3E%3Cg%3E%3Cpath class='st0' d='M167.84 1H156.1V.5l.5-.05V0h11.24z'/%3E%3C/g%3E%3Cpath class='st3' d='M27.06 27.39h6.13'/%3E%3Cpath stroke='%23fff' stroke-miterlimit='10' d='M105.03 27.39h57.04'/%3E%3C/svg%3E")
+    no-repeat;
+  padding-bottom: 16.115797989%;
+}
+.Logo-wrap {
+  width: 80%;
+  max-width: 400px;
+  min-width: 280px;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #2d2a2a;
+  padding: 2em;
+  color: #fff;
+  position: relative;
+  width: 100%;
+}
+.Header-title {
+  font-size: 1rem;
+  line-height: 1.3;
+  margin: 1em 0 0;
+  text-align: center;
+}
+
+@media (min-width: 800px) {
+  .Header-title {
+    font-size: 1.5em;
+  }
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%237298A0' stroke-width='6' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  padding: 2em;
+  margin: 2em;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: background-color 0.25s, background-image 0.25s;
+  max-width: 1200px;
+  width: calc(100% - 4em);
+  flex-grow: 1;
+  font-size: 1.5em;
+}
+
+@media (min-width: 800px) {
+  main {
+    font-size: 2em;
+  }
+}
+main.is-hovered {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23A43365' stroke-width='6' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.is-hovered * {
+  display: none;
+}
+.DropText {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  pointer-events: none;
+}
+.is-hovered .DropText {
+  display: block;
+}
+
+input[type='file'] {
+  display: none;
+}
+label {
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;
+  background: inherit;
+  padding: 0;
+  border: 0;
+  color: #a43365;
+  font-weight: bold;
+  cursor: pointer;
+}
+label:hover,
+label:focus {
+  text-decoration: underline;
+}
+
+.CopyInput {
+  position: absolute;
+  transform: translateX(-9999px);
+}
+
+.MainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.ButtonWrap:not(:empty) {
+  margin-top: 1em;
+}
+
+.DownloadButton,
+a[download],
+.CopyButton {
+  display: inline-block;
+  font-size: 1em;
+  margin: 0 0.5em;
+  margin-top: 1em;
+  transition: background-color 0.25s;
+  cursor: pointer;
+  font: inherit;
+  border: 0;
+  appearance: none;
+}
+.DownloadButton,
+a[download] {
+  color: inherit;
+  text-decoration: none;
+  background-color: #a43365;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0 0.5em;
+}
+.DownloadButton:hover,
+.DownloadButton:focus,
+a[download]:hover,
+a[download]:focus {
+  background-color: #cc4f60;
+  outline: 0;
+}
+.CopyButton {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0 0.5em;
+  background: #7298a0;
+}
+.CopyButton:hover,
+.CopyButton:focus {
+  background-color: #66b0ae;
+}
+
+@keyframes comeIn {
+  0% {
+    transform: translateX(-50%) translateY(200%);
+  }
+  20% {
+    transform: translateX(-50%) translateY(0);
+  }
+  80% {
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateY(200%);
+  }
+}
+
+.ErrorMessage {
+  position: fixed;
+  background: #de1a1a;
+  color: #fff;
+  bottom: 2em;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  display: inline-flex;
+  padding: 1em;
+  border-radius: 8px;
+  width: calc(100% - 4em);
+  max-width: fit-content;
+  animation: comeIn 5s forwards;
+}
+
+.Footer {
+  width: 100%;
+  background-color: #2d2a2a;
+  text-align: center;
+  color: #fff;
+  padding: 0 2em;
+  font-size: .85em;
+}
+.Footer-link {
+  cursor: pointer;
+  color: #7298a0;
+  font-weight: bold;
+  text-decoration: none;
+}
+.Footer-link:hover,
+.Footer-link:focus {
+  text-decoration: underline;
+}
+
+del {
+  text-decoration: none;
+  position: relative;
+}
+del::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #cc4f60;
+}
