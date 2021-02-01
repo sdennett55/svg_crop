@@ -13,9 +13,8 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  min-height: 100%;
+html {
+  height: 100%;
 }
 
 svg {
@@ -164,6 +163,7 @@ body {
   font-size: 16px;
   margin: 0;
   background: #9a9597;
+  min-height: 100%;
 }
 
 .Logo {
