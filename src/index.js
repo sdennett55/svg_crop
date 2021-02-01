@@ -7,6 +7,8 @@ const previewSectionElem = document.querySelector('.PreviewSection');
 function cleanUpElements() {
   document.querySelector('.PreviewSection').innerHTML = '';
   document.querySelector('.ButtonWrap').innerHTML = '';
+  const copyInput = document.querySelector('.CopyInput');
+  copyInput && mainElement.removeChild(copyInput);
 }
 
 
@@ -353,7 +355,6 @@ class CopyInput {
     const copyInput = document.createElement('input');
     copyInput.classList.add('CopyInput');
     copyInput.ariaHidden = true;
-    console.log('woahhh', this.svg, typeof this.svg);
     copyInput.value = this.svg.outerHTML;
     mainElement.appendChild(copyInput);
   }
