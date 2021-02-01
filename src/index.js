@@ -1,3 +1,5 @@
+const JSZip = require("jszip");
+
 (function () {
   // USER: Set either a width OR height (will scale evenly)
   const WIDTH = null;
@@ -60,61 +62,12 @@
 
     static deleteExisting() {
       this.svg = null;
+
       const svg = document.querySelector('svg');
       const enhanceButtonElem = document.querySelector('.EnhanceButton');
+
       svg && enhanceButtonElem.removeChild(svg);
-
-      const copyInput = mainElement.querySelector('.CopyInput');
-      copyInput && mainElement.removeChild(copyInput);
-
-      const downloadButton = buttonWrapElem.querySelector('a');
-      downloadButton && buttonWrapElem.removeChild(downloadButton);
-
-      const copyButton = buttonWrapElem.querySelector('button');
-      copyButton && buttonWrapElem.removeChild(copyButton);
-
       enhanceButtonElem && previewSectionElem.removeChild(enhanceButtonElem);
-
-      const colorToggleButtonElem = previewSectionElem.querySelector(
-        '.ColorToggleButton'
-      );
-      colorToggleButtonElem &&
-        previewSectionElem.removeChild(colorToggleButtonElem);
-    }
-
-    addDownloadButton() {
-      if (!this.svg) {
-        return;
-      }
-
-      // Serialize the svg to string
-      var svgString = new XMLSerializer().serializeToString(this.svg);
-
-      // Remove any characters outside the Latin1 range
-      var decoded = unescape(encodeURIComponent(svgString));
-
-      // Now we can use btoa to convert the svg to base64
-      var base64 = btoa(decoded);
-
-      var imgSource = `data:image/svg+xml;base64,${base64}`;
-
-      var a = document.createElement('a');
-      a.href = imgSource;
-      a.setAttribute(
-        'download',
-        `${this.filename.replace('.svg', '')}-cropped.svg`
-      );
-      a.textContent = 'Download';
-      buttonWrapElem.appendChild(a);
-    }
-
-    addCopyToClipboardButton() {
-      // Add "Copy to Clipboard" Button
-      const buttonElem = document.createElement('button');
-      buttonElem.textContent = 'Copy to clipboard';
-      buttonElem.classList.add('CopyButton');
-      buttonElem.addEventListener('click', Form.copyToClipboard);
-      buttonWrapElem.appendChild(buttonElem);
     }
 
     removeAttributes() {
@@ -212,14 +165,6 @@
       }
     }
 
-    addCopyInput() {
-      const copyInput = document.createElement('input');
-      copyInput.classList.add('CopyInput');
-      copyInput.ariaHidden = true;
-      copyInput.value = this.svg.outerHTML;
-      mainElement.appendChild(copyInput);
-    }
-
     addSvg() {
       function handleImageEnhance(e) {
         e.target.classList.toggle('is-enhanced');
@@ -231,6 +176,175 @@
       enhanceBtn.addEventListener('click', handleImageEnhance);
       enhanceBtn.appendChild(this.svg);
       previewSectionElem.appendChild(enhanceBtn);
+    }
+
+    render() {
+      this.addSvg();
+      this.removeAttributes();
+      this.getCoords();
+      this.setNewAttributes();
+    }
+  }
+
+  class DownloadButton {
+    constructor(svg, filename) {
+      this.svg = svg;
+      this.filename = filename;
+
+      this.deleteExisting();
+      this.addDownloadButton();
+    }
+
+    addDownloadButton() {
+      if (!this.svg) {
+        return;
+      }
+
+      // Serialize the svg to string
+      var svgString = new XMLSerializer().serializeToString(this.svg);
+
+      // Remove any characters outside the Latin1 range
+      var decoded = unescape(encodeURIComponent(svgString));
+
+      // Now we can use btoa to convert the svg to base64
+      var base64 = btoa(decoded);
+
+      var imgSource = `data:image/svg+xml;base64,${base64}`;
+
+      var a = document.createElement('a');
+      a.href = imgSource;
+      a.setAttribute(
+        'download',
+        `${this.filename.replace('.svg', '')}-cropped.svg`
+      );
+      a.textContent = 'Download';
+      buttonWrapElem.appendChild(a);
+    }
+
+    deleteExisting() {
+      const downloadButton = buttonWrapElem.querySelector('a');
+      downloadButton && buttonWrapElem.removeChild(downloadButton);
+    }
+  }
+
+  class MultipleDownloadButton {
+    constructor(svgs) {
+      this.svgs = svgs;
+
+      this.deleteExisting();
+      this.addMultipleDownloadButton();
+    }
+
+    addMultipleDownloadButton() {
+      if (this.svgs.length < 1) {
+        return;
+      }
+
+      function saveAs(blob, filename) {
+        if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+          return navigator.msSaveOrOpenBlob(blob, fileName);
+        } else if (typeof navigator.msSaveBlob !== 'undefined') {
+          return navigator.msSaveBlob(blob, fileName);
+        } else {
+          var elem = window.document.createElement('a');
+          elem.href = window.URL.createObjectURL(blob);
+          elem.download = filename;
+          elem.style = 'display:none;opacity:0;color:transparent;';
+          (document.body || document.documentElement).appendChild(elem);
+          if (typeof elem.click === 'function') {
+            elem.click();
+          } else {
+            elem.target = '_blank';
+            elem.dispatchEvent(new MouseEvent('click', {
+              view: window,
+              bubbles: true,
+              cancelable: true
+            }));
+          }
+          URL.revokeObjectURL(elem.href);
+        }
+      }
+
+      const zip = new JSZip();
+
+      this.svgs.forEach((eachSvg, index) => {
+        const { svg, filename } = eachSvg;
+
+        // Serialize the svg to string
+        var svgString = new XMLSerializer().serializeToString(svg);
+        // Remove any characters outside the Latin1 range
+        var decoded = unescape(encodeURIComponent(svgString));
+        // Now we can use btoa to convert the svg to base64
+        var base64 = btoa(decoded);
+        var imgSource = `data:image/svg+xml;base64,${base64}`;
+
+        zip.file(filename, imgSource, {base64: true});
+      })
+
+      zip.generateAsync({ type: "blob" })
+        .then(function (content) {
+          // see FileSaver.js
+          saveAs(content, "example.zip");
+        });
+
+
+
+      var a = document.createElement('a');
+      a.href = imgSource;
+      a.setAttribute(
+        'download',
+        `${filename.replace('.svg', '')}-cropped.svg`
+      );
+      a.textContent = `Download ${this.svgs.length} Files`;
+      buttonWrapElem.appendChild(a);
+    }
+
+    deleteExisting() {
+      const downloadButton = buttonWrapElem.querySelector('a');
+      downloadButton && buttonWrapElem.removeChild(downloadButton);
+    }
+  }
+
+  class CopyToClipboardButton {
+    constructor(svg, filename) {
+      this.svg = svg;
+      this.filename = filename;
+
+      this.deleteExisting();
+      this.addCopyToClipboardButton();
+    }
+
+    deleteExisting() {
+      const copyButton = buttonWrapElem.querySelector('button');
+      copyButton && buttonWrapElem.removeChild(copyButton);
+    }
+
+    addCopyToClipboardButton() {
+      // Add "Copy to Clipboard" Button
+      const buttonElem = document.createElement('button');
+      buttonElem.textContent = 'Copy to clipboard';
+      buttonElem.classList.add('CopyButton');
+      buttonElem.addEventListener('click', Form.copyToClipboard);
+      buttonWrapElem.appendChild(buttonElem);
+    }
+
+  }
+
+  class ColorToggleButton {
+    constructor(svg, filename) {
+      this.svg = svg;
+      this.filename = filename;
+
+      this.deleteExisting();
+      this.addColorToggle();
+    }
+
+    deleteExisting() {
+      const colorToggleButtonElem = previewSectionElem.querySelector(
+        '.ColorToggleButton'
+      );
+      colorToggleButtonElem &&
+        previewSectionElem.removeChild(colorToggleButtonElem);
     }
 
     addColorToggle() {
@@ -259,17 +373,29 @@
       blackColorBtn.addEventListener('click', handleColorToggle);
       previewSectionElem.appendChild(blackColorBtn);
     }
+  }
 
-    render() {
-      this.addSvg();
-      this.removeAttributes();
-      this.getCoords();
-      this.setNewAttributes();
-      
-      this.addColorToggle();
+  class CopyInput {
+    constructor(svg, filename) {
+      this.svg = svg;
+      this.filename = filename;
+
+      this.deleteExisting();
       this.addCopyInput();
-      this.addDownloadButton();
-      this.addCopyToClipboardButton();
+    }
+
+    deleteExisting() {
+      const copyInput = mainElement.querySelector('.CopyInput');
+      copyInput && mainElement.removeChild(copyInput);
+    }
+
+    addCopyInput() {
+      const copyInput = document.createElement('input');
+      copyInput.classList.add('CopyInput');
+      copyInput.ariaHidden = true;
+      console.log('woahhh', this.svg, typeof this.svg);
+      copyInput.value = this.svg.outerHTML;
+      mainElement.appendChild(copyInput);
     }
   }
 
@@ -282,12 +408,17 @@
       );
     }
 
-    static handleFile(file) {
+    static async handleFile(file) {
       if (!file.name.endsWith('.svg')) {
         return new ErrorMessage(
           `Please provide an svg file with the .svg extension in the filename.`
         );
       }
+
+      let resolvePromiseTo;
+      const onLoadPromise = new Promise(resolve => {
+        resolvePromiseTo = resolve;
+      });
 
       const reader = new FileReader();
       reader.readAsText(file);
@@ -307,15 +438,22 @@
           return new ErrorMessage(`The SVG is malformed. Please try again.`);
         }
 
-        new CroppedSVG(svgElem, file.name);
+        resolvePromiseTo(svgElem);
       };
+
+      return onLoadPromise;
     }
 
-    onFileInputChange() {
+    async onFileInputChange() {
       const file = this.loadFileInput.files[0];
       CroppedSVG.deleteExisting();
-      Form.handleFile(file);
-      gtag('event', 'uploaded SVG via input', {event_label: file.name});
+      const modifiedSvg = await Form.handleFile(file);
+      new CroppedSVG(modifiedSvg, file.name);
+      new CopyInput(modifiedSvg, file.name);
+      new ColorToggleButton(modifiedSvg, file.name);
+      new DownloadButton(modifiedSvg, file.name);
+      new CopyToClipboardButton(modifiedSvg, file.name);
+      gtag('event', 'uploaded SVG via input', { event_label: file.name });
     }
 
     static copyToClipboard() {
@@ -352,22 +490,37 @@
       this.dropZone.classList.remove('is-hovered');
     }
 
-    dropHandler(ev) {
+    async dropHandler(ev) {
       ev.preventDefault();
       this.dropZone.classList.remove('is-hovered');
       CroppedSVG.deleteExisting();
 
-      if (ev.dataTransfer.items) {
-        if (ev.dataTransfer.items.length > 1) {
-          return new ErrorMessage(`Please provide only one SVG file.`);
+      if (ev.dataTransfer.files) {
+        let modifiedSvg;
+        let filename;
+        let multipleSvgs = [];
+
+        for (const eachSvg of [...ev.dataTransfer.files]) {
+          if (eachSvg.type === 'image/svg+xml') {
+            var file = eachSvg;
+            filename = file.name;
+            modifiedSvg = await Form.handleFile(file);
+            const croppedSvg = new CroppedSVG(modifiedSvg, filename);
+            gtag('event', 'uploaded SVG via drop', { event_label: file.name });
+            console.log(multipleSvgs);
+     
+          }
         }
 
-        for (const eachSvg of ev.dataTransfer.items) {
-          if (ev.dataTransfer.items[0].kind === 'file') {
-            var file = eachSvg.getAsFile();
-            Form.handleFile(file);
-            gtag('event', 'uploaded SVG via drop', {event_label: file.name});
-          }
+        if (ev.dataTransfer.files.length > 1) {
+          // return new ErrorMessage(`Please provide only one SVG file.`);
+          const copyInput = new CopyInput(modifiedSvg, filename);
+          const colorToggleBtn = new ColorToggleButton(modifiedSvg, filename);
+          const downloadBtn = new DownloadButton(modifiedSvg, filename);
+          const copyToClipboardBtn = new CopyToClipboardButton(modifiedSvg, filename);
+        } else {
+          const colorToggleBtn = new ColorToggleButton(modifiedSvg, filename);
+          const multipleDownloadBtn = new MultipleDownloadButton(multipleSvgs);
         }
 
       }
