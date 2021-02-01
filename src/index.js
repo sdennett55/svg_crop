@@ -266,7 +266,7 @@ class MultipleDownloadButton {
       var decoded = unescape(encodeURIComponent(svgString));
       // Now we can use btoa to convert the svg to base64
       var base64 = btoa(decoded);
-      // console.log({base64});
+
       zip.file(filename, base64, { base64: true });
     })
 
