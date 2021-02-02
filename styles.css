@@ -19,7 +19,7 @@ html {
 
 svg {
   display: block;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
@@ -224,7 +224,6 @@ a:focus {
 }
 
 main {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
