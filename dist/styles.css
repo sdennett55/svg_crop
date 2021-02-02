@@ -19,7 +19,7 @@ html {
 
 svg {
   display: block;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
@@ -233,7 +233,7 @@ main {
   background-color: #f3f3f3;
   border-radius: 8px;
   border: 6px solid #7298a0;
-  padding: 2em;
+  padding: 1.5em;
   margin: 2em;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   transition: background-color 0.25s, border-color 0.25s;
