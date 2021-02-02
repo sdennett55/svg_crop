@@ -19,7 +19,7 @@ html {
 
 svg {
   display: block;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 9999;
@@ -138,13 +138,11 @@ svg {
 
 
 .is-enhanced svg {
-  position: absolute !important;
-  margin: 1em;
   pointer-events: none;
   width: 100%;
   height: auto;
-  max-width: calc(100% - 2em);
-  max-height: calc(100% - 2em);
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .EnhanceButton.is-enhanced {
@@ -162,6 +160,10 @@ svg {
   border: 0;
   background: white;
   box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px, rgb(0 0 0 / 7%) 0px 4px 8px, rgb(0 0 0 / 7%) 0px 8px 16px, rgb(0 0 0 / 7%) 0px 16px 32px, rgb(0 0 0 / 7%) 0px 32px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .is-blackBg .EnhanceButton {
@@ -221,7 +223,6 @@ a:focus {
 }
 
 main {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
