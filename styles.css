@@ -28,9 +28,11 @@ svg {
   max-width: 100%;
   width: auto;
   pointer-events: none;
-  background-color: #fff;
-  outline: 2px dashed #000;
-  transition: background-color .25s, outline .25s;
+  outline: 1px solid#000;
+}
+
+.is-blackBg svg {
+  outline: 1px solid #fff;
 }
 
 .EnhanceButton,
@@ -53,6 +55,18 @@ svg {
 
 .EnhanceButton {
   cursor: zoom-in;
+  box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+  margin: .25em;
+  display: flex;
+  justify-content: center;
+  transition: background-color .25s, outline .25s, border-color .25s;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 3px solid transparent;
+}
+.EnhanceButton:hover,
+.EnhanceButton:focus {
+  border-color: #7298a0;
 }
 
 .PreviewSection {
@@ -85,6 +99,7 @@ svg {
   background-color: #000;
   cursor: pointer;
   transition: background-color .25s, border-color .25s;
+  margin-top: 1em;
 }
 .ColorToggleButton::after {
   content: '';
@@ -123,13 +138,10 @@ svg {
 
 
 .is-enhanced svg {
-  position: fixed !important;
-  outline: 2px dashed #fff;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  position: absolute !important;
+  margin: 1em;
   pointer-events: none;
-  width: calc(100% - 2em);
+  width: 100%;
   height: auto;
   max-width: calc(100% - 2em);
   max-height: calc(100% - 2em);
@@ -141,17 +153,18 @@ svg {
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 2em);
+  height: calc(100% - 2em);
   padding: 1em;
-  z-index: 9999;
+  z-index: 99999;
   cursor: zoom-out;
-  margin: 0;
-  background: rgba(0, 0, 0, .5);
+  margin: 1em;
+  border: 0;
+  background: white;
+  box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px, rgb(0 0 0 / 7%) 0px 4px 8px, rgb(0 0 0 / 7%) 0px 8px 16px, rgb(0 0 0 / 7%) 0px 16px 32px, rgb(0 0 0 / 7%) 0px 32px 64px;
 }
 
-.is-blackBg svg {
-  outline: 2px dashed #000;
+.is-blackBg .EnhanceButton {
   background-color: #000;
 }
 
@@ -164,6 +177,7 @@ body {
   margin: 0;
   background: #9a9597;
   min-height: 100%;
+  overflow-y: scroll;
 }
 
 .Logo {
@@ -208,13 +222,13 @@ main {
   justify-content: center;
   text-align: center;
   align-items: center;
-  background-color: #fff;
+  background-color: #f3f3f3;
   border-radius: 8px;
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%237298A0' stroke-width='6' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  border: 6px solid #7298a0;
   padding: 2em;
   margin: 2em;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  transition: background-color 0.25s, background-image 0.25s;
+  transition: background-color 0.25s, border-color 0.25s;
   max-width: 1200px;
   width: calc(100% - 4em);
   flex-grow: 1;
@@ -227,8 +241,8 @@ main {
   }
 }
 main.is-hovered {
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23A43365' stroke-width='6' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
   background-color: rgba(255, 255, 255, 0.4);
+  border-color: #a43365;
 }
 .is-hovered * {
   display: none;
