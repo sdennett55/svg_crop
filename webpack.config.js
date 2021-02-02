@@ -5,7 +5,7 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: path.resolve(__dirname, 'public')
+    publicPath: ''
   },
   module: {
     rules: [
@@ -37,8 +37,11 @@ module.exports = {
     ]
   },
   devServer: {
+    open: true,
+    watchOptions:{
+      poll: true,
+      ignored: "/node_modules/"
+    }, 
     contentBase: path.join(__dirname, 'dist'),
-    port: 9000,
-    hot: true,
   }
 }
