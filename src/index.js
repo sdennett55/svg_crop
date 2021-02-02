@@ -317,10 +317,10 @@ class ColorToggleButton {
 
       if (e.target.textContent === 'Preview on black') {
         e.target.children[0].textContent = 'Preview on white';
-        e.target.children[0].setAttribute('title', `Preview on white`);
+        e.target.setAttribute('title', `Preview on white`);
       } else {
         e.target.children[0].textContent = 'Preview on black';
-        e.target.children[0].setAttribute('title', `Preview on black`);
+        e.target.setAttribute('title', `Preview on black`);
       }
     }
 
@@ -328,11 +328,11 @@ class ColorToggleButton {
     const a11yText = document.createElement('span');
     a11yText.classList.add('AccessibleText');
     a11yText.textContent = `Preview on black`;
-    a11yText.setAttribute('title', `Preview on black`);
-
+    
     // add color toggle button
     const colorToggleWrap = document.createElement('div');
     colorToggleWrap.classList.add('ColorToggleWrap');
+    colorToggleWrap.setAttribute('title', `Preview on black`);
 
     const blackColorBtn = document.createElement('button');
     blackColorBtn.classList.add('ColorToggleButton');
