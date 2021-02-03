@@ -63,6 +63,7 @@ svg {
   background-color: #fff;
   border-radius: 8px;
   border: 3px solid transparent;
+  min-width: 50px;
 }
 .EnhanceButton:hover,
 .EnhanceButton:focus {
@@ -165,7 +166,6 @@ svg {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: calc(100% - 2em);
 }
 
 .is-blackBg .EnhanceButton {
