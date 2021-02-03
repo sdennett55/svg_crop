@@ -29,6 +29,7 @@ svg {
   width: auto;
   pointer-events: none;
   outline: 1px solid#000;
+  transform: translate3d(0, 0, 0);
 }
 
 .is-blackBg svg {
