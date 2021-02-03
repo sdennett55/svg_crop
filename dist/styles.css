@@ -28,6 +28,7 @@ svg {
   width: auto;
   pointer-events: none;
   outline: 1px solid#000;
+  margin: auto;
 }
 
 .is-blackBg svg {
@@ -62,6 +63,7 @@ svg {
   background-color: #fff;
   border-radius: 8px;
   border: 3px solid transparent;
+  min-width: 100px;
 }
 .EnhanceButton:hover,
 .EnhanceButton:focus {
@@ -73,6 +75,7 @@ svg {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 .PreviewSection:not(:empty) {
   margin-bottom: 1em;
