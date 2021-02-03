@@ -29,7 +29,8 @@ svg {
   width: auto;
   pointer-events: none;
   outline: 1px solid#000;
-  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .is-blackBg svg {
