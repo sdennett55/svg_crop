@@ -12227,11 +12227,13 @@ function _prepareFilesForDownload() {
       }
 
       if (fileCount > 1) {
-        new color_toggle_button(modifiedSvg, filename);
-        new multiple_download_button(multipleSvgs);
+        if (fileCount !== filesNotSVG.length) {
+          new color_toggle_button(modifiedSvg, filename);
+          new multiple_download_button(multipleSvgs);
+        }
 
         if (filesNotSVG.length > 0) {
-          new error_message("Error: The following files were malformed or not SVGs: ".concat(filesNotSVG.join(', ')));
+          return new error_message("Error: The following files were malformed or not SVGs: ".concat(filesNotSVG.join(', ')));
         }
       } else {
         if (filesNotSVG.length > 0) {
@@ -12269,7 +12271,7 @@ function _handleFile() {
       var svg = e.target.result;
 
       if (!svg) {
-        resolvePromiseTo(new Error());
+        return resolvePromiseTo(new Error());
       }
 
       if (!svg.includes('xmlns')) {
@@ -12280,7 +12282,7 @@ function _handleFile() {
       var svgElem = parser.parseFromString(svg, 'image/svg+xml').documentElement;
 
       if (svgElem.tagName === 'html') {
-        resolvePromiseTo(new Error());
+        return resolvePromiseTo(new Error());
       }
 
       resolvePromiseTo(svgElem);

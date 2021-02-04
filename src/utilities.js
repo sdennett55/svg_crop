@@ -43,10 +43,12 @@ async function prepareFilesForDownload(files, eventLabel) {
     }
 
     if (fileCount > 1) {
-      new ColorToggleButton(modifiedSvg, filename);
-      new MultipleDownloadButton(multipleSvgs);
+      if (fileCount !== filesNotSVG.length) {
+        new ColorToggleButton(modifiedSvg, filename);
+        new MultipleDownloadButton(multipleSvgs);
+      }
       if (filesNotSVG.length > 0) {
-        new ErrorMessage(`Error: The following files were malformed or not SVGs: ${filesNotSVG.join(', ')}`);
+        return new ErrorMessage(`Error: The following files were malformed or not SVGs: ${filesNotSVG.join(', ')}`);
       }
     } else {
       if (filesNotSVG.length > 0) {
