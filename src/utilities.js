@@ -77,7 +77,7 @@ async function handleFile(file) {
     let svg = e.target.result;
 
     if (!svg) {
-      resolvePromiseTo(new Error());
+      return resolvePromiseTo(new Error());
     }
 
     if (!svg.includes('xmlns')) {
@@ -89,7 +89,7 @@ async function handleFile(file) {
       .documentElement;
 
     if (svgElem.tagName === 'html') {
-      resolvePromiseTo(new Error());
+      return resolvePromiseTo(new Error());
     }
 
     resolvePromiseTo(svgElem);
