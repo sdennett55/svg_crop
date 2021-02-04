@@ -12269,7 +12269,7 @@ function _handleFile() {
       var svg = e.target.result;
 
       if (!svg) {
-        resolvePromiseTo(new Error());
+        return resolvePromiseTo(new Error());
       }
 
       if (!svg.includes('xmlns')) {
@@ -12280,7 +12280,7 @@ function _handleFile() {
       var svgElem = parser.parseFromString(svg, 'image/svg+xml').documentElement;
 
       if (svgElem.tagName === 'html') {
-        resolvePromiseTo(new Error());
+        return resolvePromiseTo(new Error());
       }
 
       resolvePromiseTo(svgElem);
