@@ -1,4 +1,4 @@
-# SVG Crop
+![SVG Crop](dist/images/twitter.png)
 
 ## Remove blank space from around any SVG instantly.
 
