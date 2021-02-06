@@ -64,6 +64,7 @@ module.exports = {
       }
     ]
   },
+  resolve: {fallback: {stream: false}},
   optimization: {
     minimizer: [
       new CssMinimizerPlugin(),
