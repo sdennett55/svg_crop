@@ -9,6 +9,8 @@
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "start:dev": "webpack serve --mode=development",
+    "dev:https": "webpack serve --mode=development --https --key .cert/localhost-key.pem --cert .cert/localhost.pem",
+    "gen:cert": "mkcert -install && mkdir .cert && cd .cert && mkcert localhost",
     "start:prod": "webpack serve --mode=production",
     "predeploy": "npm run build",
     "deploy": "echo svgcrop.com > ./dist/CNAME && gh-pages -d dist"
@@ -30,7 +32,8 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.19.0",
     "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "workbox-webpack-plugin": "^6.1.0"
   },
   "dependencies": {
     "jszip": "^3.5.0"

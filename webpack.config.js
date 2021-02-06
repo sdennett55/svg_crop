@@ -1,11 +1,18 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === "development";
 
 module.exports = {
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
+  ],
   entry: './src/index.js',
   output: {
     filename: 'main.js',
@@ -57,6 +64,7 @@ module.exports = {
       }
     ]
   },
+  resolve: {fallback: {stream: false}},
   optimization: {
     minimizer: [
       new CssMinimizerPlugin(),
