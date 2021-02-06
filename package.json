@@ -10,7 +10,7 @@
     "build": "./node_modules/.bin/webpack",
     "start:dev": "webpack serve --mode=development",
     "dev:https": "webpack serve --mode=development --https --key .cert/localhost-key.pem --cert .cert/localhost.pem",
-    "gen:cert": "mkcert -install && mkdir .cert && cd $_ && mkcert localhost",
+    "gen:cert": "mkcert -install && mkdir .cert && cd .cert && mkcert localhost",
     "start:prod": "webpack serve --mode=production",
     "predeploy": "npm run build",
     "deploy": "echo svgcrop.com > ./dist/CNAME && gh-pages -d dist"
