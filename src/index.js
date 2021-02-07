@@ -1,5 +1,5 @@
-import DropZone from './classes/drop_zone';
-import Form from './classes/form';
+import DropZone from './Components/DropZone';
+import Form from './Components/Form';
 import {serviceWorker} from './sw';
 
 import './main.css';

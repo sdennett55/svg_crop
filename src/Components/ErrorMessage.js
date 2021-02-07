@@ -1,4 +1,4 @@
-import './error_message.css';
+import './ErrorMessage.css';
 
 class ErrorMessage {
   constructor(message) {

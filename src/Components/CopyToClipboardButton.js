@@ -1,4 +1,4 @@
-import Form from './form';
+import {copyToClipboard} from '../utilities';
 
 class CopyToClipboardButton {
   constructor(svg, filename) {
@@ -10,14 +10,12 @@ class CopyToClipboardButton {
 
   addCopyToClipboardButton() {
     const buttonWrapElem = document.querySelector('.ButtonWrap');
-    // Add "Copy to Clipboard" Button
     const buttonElem = document.createElement('button');
     buttonElem.textContent = 'Copy to clipboard';
     buttonElem.classList.add('CopyButton');
-    buttonElem.addEventListener('click', Form.copyToClipboard);
+    buttonElem.addEventListener('click', copyToClipboard);
     buttonWrapElem.appendChild(buttonElem);
   }
-
 }
 
 export default CopyToClipboardButton;

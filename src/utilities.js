@@ -1,11 +1,10 @@
-import CroppedSVG from './classes/cropped_svg';
-import DownloadButton from './classes/download_button';
-import MultipleDownloadButton from './classes/multiple_download_button';
-import CopyToClipboardButton from './classes/copy_to_clipboard_button';
-import ColorToggleButton from './classes/color_toggle_button';
-import CopyInput from './classes/copy_input';
-import Form from './classes/form';
-import ErrorMessage from './classes/error_message';
+import CroppedSVG from './Components/CroppedSVG';
+import DownloadButton from './Components/DownloadButton';
+import MultipleDownloadButton from './Components/MultipleDownloadButton';
+import CopyToClipboardButton from './Components/CopyToClipboardButton';
+import ColorToggleButton from './Components/ColorToggleButton';
+import CopyInput from './Components/ColorInput';
+import ErrorMessage from './Components/ErrorMessage';
 
 function cleanUpElements() {
   document.querySelector('.PreviewSection').innerHTML = '';
@@ -32,8 +31,11 @@ async function prepareFilesForDownload(files, eventLabel) {
         try {
           modifiedSvg = await handleFile(file);
           const croppedSvg = new CroppedSVG(modifiedSvg, filename);
-          multipleSvgs.push({ svg: croppedSvg.svg, filename: croppedSvg.filename });
-          gtag('event', eventLabel, { event_label: file.name });
+          multipleSvgs.push({
+            svg: croppedSvg.svg,
+            filename: croppedSvg.filename,
+          });
+          gtag('event', eventLabel, {event_label: file.name});
         } catch {
           filesNotSVG.push(file.name);
         }
@@ -48,11 +50,17 @@ async function prepareFilesForDownload(files, eventLabel) {
         new MultipleDownloadButton(multipleSvgs);
       }
       if (filesNotSVG.length > 0) {
-        return new ErrorMessage(`Error: The following files were malformed or not SVGs: ${filesNotSVG.join(', ')}`);
+        return new ErrorMessage(
+          `Error: The following files were malformed or not SVGs: ${filesNotSVG.join(
+            ', '
+          )}`
+        );
       }
     } else {
       if (filesNotSVG.length > 0) {
-        return new ErrorMessage(`Error: The following files were not SVGs: ${filesNotSVG.join(', ')}`)
+        return new ErrorMessage(
+          `Error: The following files were not SVGs: ${filesNotSVG.join(', ')}`
+        );
       }
       new CopyInput(modifiedSvg, filename);
       new ColorToggleButton(modifiedSvg, filename);
@@ -68,7 +76,7 @@ async function handleFile(file) {
   }
 
   let resolvePromiseTo;
-  const onLoadPromise = new Promise(resolve => {
+  const onLoadPromise = new Promise((resolve) => {
     resolvePromiseTo = resolve;
   });
 
@@ -87,8 +95,7 @@ async function handleFile(file) {
     }
 
     var parser = new DOMParser();
-    var svgElem = parser.parseFromString(svg, 'image/svg+xml')
-      .documentElement;
+    var svgElem = parser.parseFromString(svg, 'image/svg+xml').documentElement;
 
     if (svgElem.tagName === 'html') {
       return resolvePromiseTo(new Error());
@@ -100,4 +107,13 @@ async function handleFile(file) {
   return onLoadPromise;
 }
 
-export { prepareFilesForDownload, cleanUpElements }
+function copyToClipboard() {
+  const copyText = document.querySelector('.CopyInput');
+  if (copyText) {
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+  }
+}
+
+export {prepareFilesForDownload, cleanUpElements, copyToClipboard};

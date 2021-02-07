@@ -3,10 +3,7 @@ import {prepareFilesForDownload} from '../utilities';
 class DropZone {
   constructor() {
     this.dropZone = document.querySelector('#drop_zone');
-    this.dropZone.addEventListener(
-      'dragover',
-      this.dragOverHandler.bind(this)
-    );
+    this.dropZone.addEventListener('dragover', this.dragOverHandler.bind(this));
     this.dropZone.addEventListener(
       'dragleave',
       this.dragLeaveHandler.bind(this)
