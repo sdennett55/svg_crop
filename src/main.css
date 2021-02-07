@@ -46,7 +46,7 @@ svg {
   background-color: transparent;
   margin: 0;
   margin-bottom: 1rem;
-  padding: .25em;
+  padding: 0.25em;
 }
 .EnhanceButton:focus,
 .ColorToggleButton:focus {
@@ -56,9 +56,9 @@ svg {
 .EnhanceButton {
   cursor: zoom-in;
   box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
-  margin: .25em;
+  margin: 0.25em;
   display: block;
-  transition: background-color .25s, outline .25s, border-color .25s;
+  transition: background-color 0.25s, outline 0.25s, border-color 0.25s;
   background-color: #fff;
   border-radius: 8px;
   border: 3px solid transparent;
@@ -99,7 +99,7 @@ svg {
   border-radius: 4px;
   background-color: #000;
   cursor: pointer;
-  transition: background-color .25s, border-color .25s;
+  transition: background-color 0.25s, border-color 0.25s;
   margin-top: 1em;
 }
 .ColorToggleButton::after {
@@ -112,7 +112,7 @@ svg {
   border: 1px solid #000;
   border-radius: 4px;
   background-color: #fff;
-  transition: background-color .25s, border-color .25s;
+  transition: background-color 0.25s, border-color 0.25s;
 }
 
 .AccessibleText {
@@ -137,7 +137,6 @@ svg {
   border-color: #fff;
 }
 
-
 .is-enhanced svg {
   pointer-events: none;
   width: auto;
@@ -160,7 +159,9 @@ svg {
   margin: 1em;
   border: 0;
   background: white;
-  box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px, rgb(0 0 0 / 7%) 0px 4px 8px, rgb(0 0 0 / 7%) 0px 8px 16px, rgb(0 0 0 / 7%) 0px 16px 32px, rgb(0 0 0 / 7%) 0px 32px 64px;
+  box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px,
+    rgb(0 0 0 / 7%) 0px 4px 8px, rgb(0 0 0 / 7%) 0px 8px 16px,
+    rgb(0 0 0 / 7%) 0px 16px 32px, rgb(0 0 0 / 7%) 0px 32px 64px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -327,12 +328,22 @@ a[download] {
   color: #fff;
   padding: 0 0.5em;
 }
+.DownloadButton:disabled,
+a[download]:disabled {
+  background: #6b6b6b;
+}
 .DownloadButton:hover,
 .DownloadButton:focus,
 a[download]:hover,
 a[download]:focus {
   background-color: #cc4f60;
   outline: 0;
+}
+.DownloadButton:disabled:hover,
+a[download]:disabled:hover,
+.DownloadButton:disabled:focus,
+a[download]:disabled:focus {
+  background: #6b6b6b;
 }
 .CopyButton {
   -webkit-appearance: none;
@@ -354,7 +365,7 @@ a[download]:focus {
   text-align: center;
   color: #fff;
   padding: 0 2em;
-  font-size: .85em;
+  font-size: 0.85em;
 }
 .Footer-link {
   cursor: pointer;

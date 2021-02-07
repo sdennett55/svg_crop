@@ -21,7 +21,6 @@ class MultipleDownloadButton {
       if (typeof elem.click === 'function') {
         elem.click();
       } else {
-        elem.target = '_blank';
         elem.dispatchEvent(
           new MouseEvent('click', {
             view: window,
@@ -34,15 +33,15 @@ class MultipleDownloadButton {
     }
   }
 
-  clickHandler(zip) {
+  clickHandler(zip, buttonElem) {
     let prevText;
 
     if (this.svgs.length > 50) {
       prevText = buttonElem.innerText;
       buttonElem.setAttribute('disabled', '');
-      buttonElem.innerText = 'Loading...';
+      buttonElem.innerText = 'Downloading...';
     }
-    zip.generateAsync({type: 'blob'}).then(
+    zip.generateAsync({ type: 'blob' }).then(
       function (content) {
         // see FileSaver.js
         this.saveAs(content, 'SVGCropFiles.zip');
@@ -63,7 +62,7 @@ class MultipleDownloadButton {
     const zip = new JSZip();
 
     this.svgs.forEach((eachSvg) => {
-      const {svg, filename} = eachSvg;
+      const { svg, filename } = eachSvg;
 
       // Serialize the svg to string
       var svgString = new XMLSerializer().serializeToString(svg);
@@ -72,13 +71,13 @@ class MultipleDownloadButton {
       // Now we can use btoa to convert the svg to base64
       var base64 = btoa(decoded);
 
-      zip.file(filename, base64, {base64: true});
+      zip.file(filename, base64, { base64: true });
     });
 
     var buttonElem = document.createElement('button');
     buttonElem.textContent = `Download ${this.svgs.length} Files`;
     buttonElem.classList.add('DownloadButton');
-    buttonElem.addEventListener('click', this.clickHandler.bind(this, zip));
+    buttonElem.addEventListener('click', this.clickHandler.bind(this, zip, buttonElem));
     const buttonWrapElem = document.querySelector('.ButtonWrap');
     buttonWrapElem.appendChild(buttonElem);
   }

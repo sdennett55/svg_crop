@@ -9,7 +9,7 @@ class CopyInput {
   addCopyInput() {
     const copyInput = document.createElement('input');
     copyInput.classList.add('CopyInput');
-    copyInput.ariaHidden = true;
+    copyInput.setAttribute('aria-hidden', '');
     copyInput.value = this.svg.outerHTML;
     const mainElement = document.querySelector('.MainContent');
     mainElement.appendChild(copyInput);
