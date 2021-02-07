@@ -11779,7 +11779,7 @@ module.exports = typeof setImmediate === 'function' ? setImmediate :
 (() => {
 "use strict";
 
-;// CONCATENATED MODULE: ./src/classes/cropped_svg.js
+;// CONCATENATED MODULE: ./src/Components/CroppedSVG.js
 // USER: Set either a width OR height (will scale evenly)
 var WIDTH = null;
 var HEIGHT = null;
@@ -11899,8 +11899,8 @@ class CroppedSVG {
 
 }
 
-/* harmony default export */ const cropped_svg = (CroppedSVG);
-;// CONCATENATED MODULE: ./src/classes/download_button.js
+/* harmony default export */ const Components_CroppedSVG = (CroppedSVG);
+;// CONCATENATED MODULE: ./src/Components/DownloadButton.js
 class DownloadButton {
   constructor(svg, filename) {
     this.svg = svg;
@@ -11930,11 +11930,11 @@ class DownloadButton {
 
 }
 
-/* harmony default export */ const download_button = (DownloadButton);
+/* harmony default export */ const Components_DownloadButton = (DownloadButton);
 // EXTERNAL MODULE: ./node_modules/jszip/lib/index.js
 var lib = __webpack_require__(6085);
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
-;// CONCATENATED MODULE: ./src/classes/multiple_download_button.js
+;// CONCATENATED MODULE: ./src/Components/MultipleDownloadButton.js
 
 
 class MultipleDownloadButton {
@@ -11943,36 +11943,57 @@ class MultipleDownloadButton {
     this.addMultipleDownloadButton();
   }
 
+  saveAs(blob, filename) {
+    if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+      return navigator.msSaveOrOpenBlob(blob, fileName);
+    } else if (typeof navigator.msSaveBlob !== 'undefined') {
+      return navigator.msSaveBlob(blob, fileName);
+    } else {
+      var elem = window.document.createElement('a');
+      elem.href = window.URL.createObjectURL(blob);
+      elem.download = filename;
+      elem.style = 'display:none;opacity:0;color:transparent;';
+      (document.body || document.documentElement).appendChild(elem);
+
+      if (typeof elem.click === 'function') {
+        elem.click();
+      } else {
+        elem.dispatchEvent(new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: true
+        }));
+      }
+
+      URL.revokeObjectURL(elem.href);
+    }
+  }
+
+  clickHandler(zip, buttonElem) {
+    var prevText;
+
+    if (this.svgs.length > 50) {
+      prevText = buttonElem.innerText;
+      buttonElem.setAttribute('disabled', '');
+      buttonElem.innerText = 'Downloading...';
+    }
+
+    zip.generateAsync({
+      type: 'blob'
+    }).then(function (content) {
+      // see FileSaver.js
+      this.saveAs(content, 'SVGCropFiles.zip');
+
+      if (this.svgs.length > 50) {
+        buttonElem.removeAttribute('disabled');
+        buttonElem.innerText = prevText;
+      }
+    }.bind(this));
+  }
+
   addMultipleDownloadButton() {
     if (this.svgs.length < 1) {
       return;
-    }
-
-    function saveAs(blob, filename) {
-      if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
-        return navigator.msSaveOrOpenBlob(blob, fileName);
-      } else if (typeof navigator.msSaveBlob !== 'undefined') {
-        return navigator.msSaveBlob(blob, fileName);
-      } else {
-        var elem = window.document.createElement('a');
-        elem.href = window.URL.createObjectURL(blob);
-        elem.download = filename;
-        elem.style = 'display:none;opacity:0;color:transparent;';
-        (document.body || document.documentElement).appendChild(elem);
-
-        if (typeof elem.click === 'function') {
-          elem.click();
-        } else {
-          elem.target = '_blank';
-          elem.dispatchEvent(new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true
-          }));
-        }
-
-        URL.revokeObjectURL(elem.href);
-      }
     }
 
     var zip = new (lib_default())();
@@ -11994,59 +12015,15 @@ class MultipleDownloadButton {
     var buttonElem = document.createElement('button');
     buttonElem.textContent = "Download ".concat(this.svgs.length, " Files");
     buttonElem.classList.add('DownloadButton');
-    buttonElem.addEventListener('click', () => {
-      zip.generateAsync({
-        type: "blob"
-      }).then(function (content) {
-        // see FileSaver.js
-        saveAs(content, "SVGCropFiles.zip");
-      });
-    });
+    buttonElem.addEventListener('click', this.clickHandler.bind(this, zip, buttonElem));
     var buttonWrapElem = document.querySelector('.ButtonWrap');
     buttonWrapElem.appendChild(buttonElem);
   }
 
 }
 
-/* harmony default export */ const multiple_download_button = (MultipleDownloadButton);
-;// CONCATENATED MODULE: ./src/classes/form.js
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-
-
-
-class Form {
-  constructor() {
-    this.loadFileInput = document.querySelector('#myfile');
-    this.loadFileInput.addEventListener('change', this.onFileInputChange.bind(this));
-  }
-
-  onFileInputChange(ev) {
-    var _this = this;
-
-    return _asyncToGenerator(function* () {
-      var files = _this.loadFileInput.files;
-      cleanUpElements();
-      prepareFilesForDownload(files, 'uploaded SVG via input');
-    })();
-  }
-
-  static copyToClipboard() {
-    var copyText = document.querySelector('.CopyInput');
-
-    if (copyText) {
-      copyText.select();
-      copyText.setSelectionRange(0, 99999);
-      document.execCommand('copy');
-    }
-  }
-
-}
-
-/* harmony default export */ const classes_form = (Form);
-;// CONCATENATED MODULE: ./src/classes/copy_to_clipboard_button.js
+/* harmony default export */ const Components_MultipleDownloadButton = (MultipleDownloadButton);
+;// CONCATENATED MODULE: ./src/Components/CopyToClipboardButton.js
 
 
 class CopyToClipboardButton {
@@ -12057,19 +12034,18 @@ class CopyToClipboardButton {
   }
 
   addCopyToClipboardButton() {
-    var buttonWrapElem = document.querySelector('.ButtonWrap'); // Add "Copy to Clipboard" Button
-
+    var buttonWrapElem = document.querySelector('.ButtonWrap');
     var buttonElem = document.createElement('button');
     buttonElem.textContent = 'Copy to clipboard';
     buttonElem.classList.add('CopyButton');
-    buttonElem.addEventListener('click', classes_form.copyToClipboard);
+    buttonElem.addEventListener('click', copyToClipboard);
     buttonWrapElem.appendChild(buttonElem);
   }
 
 }
 
-/* harmony default export */ const copy_to_clipboard_button = (CopyToClipboardButton);
-;// CONCATENATED MODULE: ./src/classes/color_toggle_button.js
+/* harmony default export */ const Components_CopyToClipboardButton = (CopyToClipboardButton);
+;// CONCATENATED MODULE: ./src/Components/ColorToggleButton.js
 class ColorToggleButton {
   constructor(svg, filename) {
     this.svg = svg;
@@ -12077,21 +12053,21 @@ class ColorToggleButton {
     this.addColorToggle();
   }
 
+  handleColorToggle(e) {
+    var mainElement = document.querySelector('.MainContent');
+    mainElement.classList.toggle('is-blackBg');
+
+    if (e.target.textContent === 'Preview on black') {
+      e.target.children[0].textContent = 'Preview on white';
+      e.target.setAttribute('title', "Preview on white");
+    } else {
+      e.target.children[0].textContent = 'Preview on black';
+      e.target.setAttribute('title', "Preview on black");
+    }
+  }
+
   addColorToggle() {
-    function handleColorToggle(e) {
-      var mainElement = document.querySelector('.MainContent');
-      mainElement.classList.toggle('is-blackBg');
-
-      if (e.target.textContent === 'Preview on black') {
-        e.target.children[0].textContent = 'Preview on white';
-        e.target.setAttribute('title', "Preview on white");
-      } else {
-        e.target.children[0].textContent = 'Preview on black';
-        e.target.setAttribute('title', "Preview on black");
-      }
-    } // add a11y text
-
-
+    // add a11y text
     var a11yText = document.createElement('span');
     a11yText.classList.add('AccessibleText');
     a11yText.textContent = "Preview on black"; // add color toggle button
@@ -12102,7 +12078,7 @@ class ColorToggleButton {
     var blackColorBtn = document.createElement('button');
     blackColorBtn.classList.add('ColorToggleButton');
     blackColorBtn.appendChild(a11yText);
-    blackColorBtn.addEventListener('click', handleColorToggle);
+    blackColorBtn.addEventListener('click', this.handleColorToggle);
     colorToggleWrap.appendChild(blackColorBtn);
     var previewSectionElem = document.querySelector('.PreviewSection');
     previewSectionElem.appendChild(colorToggleWrap);
@@ -12110,8 +12086,8 @@ class ColorToggleButton {
 
 }
 
-/* harmony default export */ const color_toggle_button = (ColorToggleButton);
-;// CONCATENATED MODULE: ./src/classes/copy_input.js
+/* harmony default export */ const Components_ColorToggleButton = (ColorToggleButton);
+;// CONCATENATED MODULE: ./src/Components/ColorInput.js
 class CopyInput {
   constructor(svg, filename) {
     this.svg = svg;
@@ -12122,7 +12098,7 @@ class CopyInput {
   addCopyInput() {
     var copyInput = document.createElement('input');
     copyInput.classList.add('CopyInput');
-    copyInput.ariaHidden = true;
+    copyInput.setAttribute('aria-hidden', '');
     copyInput.value = this.svg.outerHTML;
     var mainElement = document.querySelector('.MainContent');
     mainElement.appendChild(copyInput);
@@ -12130,8 +12106,8 @@ class CopyInput {
 
 }
 
-/* harmony default export */ const copy_input = (CopyInput);
-;// CONCATENATED MODULE: ./src/classes/error_message.js
+/* harmony default export */ const ColorInput = (CopyInput);
+;// CONCATENATED MODULE: ./src/Components/ErrorMessage.js
 
 
 class ErrorMessage {
@@ -12164,12 +12140,11 @@ class ErrorMessage {
 
 }
 
-/* harmony default export */ const error_message = (ErrorMessage);
+/* harmony default export */ const Components_ErrorMessage = (ErrorMessage);
 ;// CONCATENATED MODULE: ./src/utilities.js
-function utilities_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-function utilities_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { utilities_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { utilities_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
 
@@ -12192,7 +12167,7 @@ function prepareFilesForDownload(_x, _x2) {
 }
 
 function _prepareFilesForDownload() {
-  _prepareFilesForDownload = utilities_asyncToGenerator(function* (files, eventLabel) {
+  _prepareFilesForDownload = _asyncToGenerator(function* (files, eventLabel) {
     cleanUpElements();
 
     if (files) {
@@ -12210,7 +12185,7 @@ function _prepareFilesForDownload() {
 
           try {
             modifiedSvg = yield handleFile(file);
-            var croppedSvg = new cropped_svg(modifiedSvg, filename);
+            var croppedSvg = new Components_CroppedSVG(modifiedSvg, filename);
             multipleSvgs.push({
               svg: croppedSvg.svg,
               filename: croppedSvg.filename
@@ -12228,22 +12203,22 @@ function _prepareFilesForDownload() {
 
       if (fileCount > 1) {
         if (fileCount !== filesNotSVG.length) {
-          new color_toggle_button(modifiedSvg, filename);
-          new multiple_download_button(multipleSvgs);
+          new Components_ColorToggleButton(modifiedSvg, filename);
+          new Components_MultipleDownloadButton(multipleSvgs);
         }
 
         if (filesNotSVG.length > 0) {
-          return new error_message("Error: The following files were malformed or not SVGs: ".concat(filesNotSVG.join(', ')));
+          return new Components_ErrorMessage("Error: The following files were malformed or not SVGs: ".concat(filesNotSVG.join(', ')));
         }
       } else {
         if (filesNotSVG.length > 0) {
-          return new error_message("Error: The following files were not SVGs: ".concat(filesNotSVG.join(', ')));
+          return new Components_ErrorMessage("Error: The following files were not SVGs: ".concat(filesNotSVG.join(', ')));
         }
 
-        new copy_input(modifiedSvg, filename);
-        new color_toggle_button(modifiedSvg, filename);
-        new download_button(modifiedSvg, filename);
-        new copy_to_clipboard_button(modifiedSvg, filename);
+        new ColorInput(modifiedSvg, filename);
+        new Components_ColorToggleButton(modifiedSvg, filename);
+        new Components_DownloadButton(modifiedSvg, filename);
+        new Components_CopyToClipboardButton(modifiedSvg, filename);
       }
     }
   });
@@ -12255,7 +12230,7 @@ function handleFile(_x3) {
 }
 
 function _handleFile() {
-  _handleFile = utilities_asyncToGenerator(function* (file) {
+  _handleFile = _asyncToGenerator(function* (file) {
     if (!file.name.endsWith('.svg')) {
       throw new Error();
     }
@@ -12293,11 +12268,21 @@ function _handleFile() {
   return _handleFile.apply(this, arguments);
 }
 
+function copyToClipboard() {
+  var copyText = document.querySelector('.CopyInput');
 
-;// CONCATENATED MODULE: ./src/classes/drop_zone.js
-function drop_zone_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+  if (copyText) {
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+  }
+}
 
-function drop_zone_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { drop_zone_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { drop_zone_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+;// CONCATENATED MODULE: ./src/Components/DropZone.js
+function DropZone_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function DropZone_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { DropZone_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { DropZone_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
 
@@ -12322,7 +12307,7 @@ class DropZone {
   dropHandler(ev) {
     var _this = this;
 
-    return drop_zone_asyncToGenerator(function* () {
+    return DropZone_asyncToGenerator(function* () {
       ev.preventDefault();
 
       _this.dropZone.classList.remove('is-hovered');
@@ -12333,7 +12318,33 @@ class DropZone {
 
 }
 
-/* harmony default export */ const drop_zone = (DropZone);
+/* harmony default export */ const Components_DropZone = (DropZone);
+;// CONCATENATED MODULE: ./src/Components/Form.js
+function Form_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function Form_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { Form_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { Form_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+class Form {
+  constructor() {
+    this.loadFileInput = document.querySelector('#myfile');
+    this.loadFileInput.addEventListener('change', this.onFileInputChange.bind(this));
+  }
+
+  onFileInputChange() {
+    var _this = this;
+
+    return Form_asyncToGenerator(function* () {
+      cleanUpElements();
+      var files = _this.loadFileInput.files;
+      prepareFilesForDownload(files, 'uploaded SVG via input');
+    })();
+  }
+
+}
+
+/* harmony default export */ const Components_Form = (Form);
 ;// CONCATENATED MODULE: ./src/sw.js
 var serviceWorker = () => {
   if ('serviceWorker' in navigator) {
@@ -12365,8 +12376,8 @@ var serviceWorker = () => {
 
 
 
-new drop_zone();
-new classes_form();
+new Components_DropZone();
+new Components_Form();
 serviceWorker();
 })();
 
