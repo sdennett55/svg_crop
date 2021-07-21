@@ -1,21 +1,20 @@
 class ColorToggleButton {
-  constructor(svg, filename) {
-    this.svg = svg;
-    this.filename = filename;
-
+  constructor(public svg: HTMLOrSVGElement, public filename: string) {
     this.addColorToggle();
   }
 
-  handleColorToggle(e) {
+  handleColorToggle(e: Event) {
     const mainElement = document.querySelector('.MainContent');
-    mainElement.classList.toggle('is-blackBg');
+    mainElement!.classList.toggle('is-blackBg');
 
-    if (e.target.textContent === 'Preview on black') {
-      e.target.children[0].textContent = 'Preview on white';
-      e.target.setAttribute('title', `Preview on white`);
+    const target = e.target as HTMLElement;
+
+    if (target.textContent === 'Preview on black') {
+      target.children[0].textContent = 'Preview on white';
+      target.setAttribute('title', `Preview on white`);
     } else {
-      e.target.children[0].textContent = 'Preview on black';
-      e.target.setAttribute('title', `Preview on black`);
+      target.children[0].textContent = 'Preview on black';
+      target.setAttribute('title', `Preview on black`);
     }
   }
 
@@ -36,7 +35,7 @@ class ColorToggleButton {
     blackColorBtn.addEventListener('click', this.handleColorToggle);
     colorToggleWrap.appendChild(blackColorBtn);
     const previewSectionElem = document.querySelector('.PreviewSection');
-    previewSectionElem.appendChild(colorToggleWrap);
+    previewSectionElem!.appendChild(colorToggleWrap);
   }
 }
 

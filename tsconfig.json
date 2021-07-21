@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./",
+    "allowJs": true,
+    "target": "es5",
+    "strict": true,
+    "watch": true,
+  },
+  "include": ["./src/**/*"],
+  "files": [
+    "./src/Components/ColorToggleButton.ts"
+  ]
+}
