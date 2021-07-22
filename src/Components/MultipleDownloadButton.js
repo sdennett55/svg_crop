@@ -1,5 +1,3 @@
-import JSZip from 'jszip';
-
 class MultipleDownloadButton {
   constructor(svgs) {
     this.svgs = svgs;
@@ -59,27 +57,30 @@ class MultipleDownloadButton {
       return;
     }
 
-    const zip = new JSZip();
+    import('jszip').then(({default: JSZip}) => {
+      const zip = new JSZip();
+      
+      this.svgs.forEach((eachSvg) => {
+        const { svg, filename } = eachSvg;
+  
+        // Serialize the svg to string
+        var svgString = new XMLSerializer().serializeToString(svg);
+        // Remove any characters outside the Latin1 range
+        var decoded = unescape(encodeURIComponent(svgString));
+        // Now we can use btoa to convert the svg to base64
+        var base64 = btoa(decoded);
+  
+        zip.file(filename, base64, { base64: true });
+      });
+  
+      var buttonElem = document.createElement('button');
+      buttonElem.textContent = `Download ${this.svgs.length} Files`;
+      buttonElem.classList.add('DownloadButton');
+      buttonElem.addEventListener('click', this.clickHandler.bind(this, zip, buttonElem));
+      const buttonWrapElem = document.querySelector('.ButtonWrap');
+      buttonWrapElem.appendChild(buttonElem);
+    })
 
-    this.svgs.forEach((eachSvg) => {
-      const { svg, filename } = eachSvg;
-
-      // Serialize the svg to string
-      var svgString = new XMLSerializer().serializeToString(svg);
-      // Remove any characters outside the Latin1 range
-      var decoded = unescape(encodeURIComponent(svgString));
-      // Now we can use btoa to convert the svg to base64
-      var base64 = btoa(decoded);
-
-      zip.file(filename, base64, { base64: true });
-    });
-
-    var buttonElem = document.createElement('button');
-    buttonElem.textContent = `Download ${this.svgs.length} Files`;
-    buttonElem.classList.add('DownloadButton');
-    buttonElem.addEventListener('click', this.clickHandler.bind(this, zip, buttonElem));
-    const buttonWrapElem = document.querySelector('.ButtonWrap');
-    buttonWrapElem.appendChild(buttonElem);
   }
 }
 
