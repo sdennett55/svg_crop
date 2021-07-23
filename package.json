@@ -13,13 +13,14 @@
     "gen:cert": "mkcert -install && mkdir .cert && cd .cert && mkcert localhost",
     "start:prod": "webpack serve --mode=production",
     "predeploy": "npm run build",
-    "deploy": "echo svgcrop.com > ./dist/CNAME && gh-pages -d dist",
+    "deploy": "echo svgcrop.com > ./dist/CNAME && cp -a src/images/. dist/images && gh-pages -d dist",
     "tsc": "tsc"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",
     "cypress": "^6.3.0",

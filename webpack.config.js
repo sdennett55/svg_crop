@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === "development";
@@ -18,6 +19,18 @@ module.exports = {
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
+    }),
+    // idea is to automatically copy images from src/images to dist/images so they're available publicly
+    // not working for some reason. tried all sorts of globs. not clear how to debug this.
+    // adding a terminal command to the "deploy" script in the meantime.
+    new CopyPlugin({
+      patterns: [
+        {
+          context: __dirname + '/src',
+          from: "images/twitter.png",
+          to: __dirname + "/dist/images/twitter.png"
+        },
+      ],
     }),
   ],
   entry: './src/index.ts',
@@ -61,12 +74,16 @@ module.exports = {
           }
         }
       },
-      {
-        test: /\.(png|jpg)$/,
-        use: {
-          loader: 'url-loader'
-        }
-      },
+      // {
+      //   test: /\.(png|jpg)$/,
+      //   use: {
+      //     loader: 'url-loader',
+      //     options: {
+      //       name: '[name].[ext]',
+      //       outputPath: '/images/'
+      //     }
+      //   }
+      // },
       {
         test: /\.css$/,
         use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
