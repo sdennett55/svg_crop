@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type JSZip = require('jszip');
 
 interface SVGObject {
   filename: string;
@@ -18,7 +18,7 @@ class MultipleDownloadButton {
     } else if (typeof navigator.msSaveBlob !== 'undefined') {
       return navigator.msSaveBlob(blob, filename);
     } else {
-      var elem = window.document.createElement('a');
+      const elem = window.document.createElement('a');
       elem.href = window.URL.createObjectURL(blob);
       elem.download = filename;
       elem.style.display = 'none';
@@ -40,7 +40,7 @@ class MultipleDownloadButton {
     }
   }
 
-  clickHandler(zip, buttonElem) {
+  async clickHandler(zip: JSZip, buttonElem: HTMLButtonElement) {
     let prevText = '';
 
     if (this.svgs.length > 50) {
@@ -48,17 +48,14 @@ class MultipleDownloadButton {
       buttonElem.setAttribute('disabled', '');
       buttonElem.innerText = 'Downloading...';
     }
-    zip.generateAsync({ type: 'blob' }).then(
-      function (content) {
-        // see FileSaver.js
-        this.saveAs(content, 'SVGCropFiles.zip');
 
-        if (this.svgs.length > 50) {
-          buttonElem.removeAttribute('disabled');
-          buttonElem.innerText = prevText;
-        }
-      }.bind(this)
-    );
+    const content = await zip.generateAsync({ type: 'blob' });
+    this.saveAs(content, 'SVGCropFiles.zip');
+
+    if (this.svgs.length > 50) {
+      buttonElem.removeAttribute('disabled');
+      buttonElem.innerText = prevText;
+    }
   }
 
   async addMultipleDownloadButton() {
@@ -67,25 +64,22 @@ class MultipleDownloadButton {
     }
 
     const JSZip = await import('jszip');
-
     const zip = new JSZip();
-
-    console.log('wtfwtf', zip);
 
     this.svgs.forEach((eachSvg) => {
       const { svg, filename } = eachSvg;
 
       // Serialize the svg to string
-      var svgString = new XMLSerializer().serializeToString(svg);
+      const svgString = new XMLSerializer().serializeToString(svg);
       // Remove any characters outside the Latin1 range
-      var decoded = unescape(encodeURIComponent(svgString));
+      const decoded = unescape(encodeURIComponent(svgString));
       // Now we can use btoa to convert the svg to base64
-      var base64 = btoa(decoded);
+      const base64 = btoa(decoded);
 
       zip.file(filename, base64, { base64: true });
     });
 
-    var buttonElem = document.createElement('button');
+    const buttonElem = document.createElement('button');
     buttonElem.textContent = `Download ${this.svgs.length} Files`;
     buttonElem.classList.add('DownloadButton');
     buttonElem.addEventListener('click', this.clickHandler.bind(this, zip, buttonElem));

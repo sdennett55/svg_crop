@@ -12,17 +12,17 @@ class DownloadButton {
     }
 
     // Serialize the svg to string
-    var svgString = new XMLSerializer().serializeToString(this.svg);
+    const svgString = new XMLSerializer().serializeToString(this.svg);
 
     // Remove any characters outside the Latin1 range
-    var decoded = unescape(encodeURIComponent(svgString));
+    const decoded = unescape(encodeURIComponent(svgString));
 
     // Now we can use btoa to convert the svg to base64
-    var base64 = btoa(decoded);
+    const base64 = btoa(decoded);
 
-    var imgSource = `data:image/svg+xml;base64,${base64}`;
+    const imgSource = `data:image/svg+xml;base64,${base64}`;
 
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     a.href = imgSource;
     a.setAttribute(
       'download',

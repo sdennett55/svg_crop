@@ -95,8 +95,8 @@ async function handleFile(file) {
       svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
     }
 
-    var parser = new DOMParser();
-    var svgElem = parser.parseFromString(svg, 'image/svg+xml').documentElement;
+    const parser = new DOMParser();
+    const svgElem = parser.parseFromString(svg, 'image/svg+xml').documentElement;
 
     if (svgElem.tagName === 'html') {
       return resolvePromiseTo(new Error());
