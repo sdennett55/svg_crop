@@ -1,0 +1,2 @@
+@keyframes comeIn{0%{transform:translateX(-50%) translateY(200%)}20%{transform:translateX(-50%) translateY(0)}80%{transform:translateX(-50%) translateY(0)}to{transform:translateX(-50%) translateY(200%)}}.ErrorMessage{position:fixed;background:#de1a1a;color:#fff;bottom:2em;left:50%;transform:translateX(-50%);text-align:center;padding:1em;border-radius:8px;width:calc(100% - 4em);max-width:fit-content;animation:comeIn 5s forwards;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+/*# sourceMappingURL=727.css.map*/
