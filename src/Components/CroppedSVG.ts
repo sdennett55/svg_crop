@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 const invisibleElems = [
   'defs',
   'g',
@@ -45,6 +43,7 @@ class CroppedSVG {
     function flatten(ops: SVGElement[], n: SVGElement) {
       ops.push(n);
       if (n.childNodes && n.childNodes.length) {
+        // @ts-ignore: Unreachable code error
         [].reduce.call(n.childNodes, flatten, ops);
       }
       return ops;
