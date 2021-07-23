@@ -1,8 +1,10 @@
 import {prepareFilesForDownload, cleanUpElements} from '../utilities';
 
-class Form {
+class FileInput {
+  loadFileInput: HTMLInputElement;
+
   constructor() {
-    this.loadFileInput = document.querySelector('#myfile');
+    this.loadFileInput = document.querySelector('#myfile') as HTMLInputElement;
     this.loadFileInput.addEventListener(
       'change',
       this.onFileInputChange.bind(this)
@@ -16,4 +18,4 @@ class Form {
   }
 }
 
-export default Form;
+export default FileInput;

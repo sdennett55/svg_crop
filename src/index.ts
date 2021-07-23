@@ -1,9 +1,9 @@
 import DropZone from './Components/DropZone';
-import Form from './Components/Form';
+import FileInput from './Components/FileInput';
 import {serviceWorker} from './sw';
 
 import './main.css';
 
 new DropZone();
-new Form();
+new FileInput();
 serviceWorker();

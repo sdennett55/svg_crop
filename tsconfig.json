@@ -8,6 +8,14 @@
   },
   "include": ["./src/**/*"],
   "files": [
-    "./src/Components/ColorToggleButton.ts"
+    "./src/Components/ColorToggleButton.ts",
+    "./src/Components/ColorInput.ts",
+    "./src/Components/CopyToClipboardButton.ts",
+    "./src/Components/CroppedSVG.ts",
+    "./src/Components/DownloadButton.ts",
+    "./src/Components/DropZone.ts",
+    "./src/Components/ErrorMessage.ts",
+    "./src/Components/FileInput.ts",
+    "./src/Components/MultipleDownloadButton.ts"
   ]
 }

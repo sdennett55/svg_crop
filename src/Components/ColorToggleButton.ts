@@ -1,5 +1,5 @@
 class ColorToggleButton {
-  constructor(public svg: HTMLOrSVGElement, public filename: string) {
+  constructor(public svg: SVGElement, public filename: string) {
     this.addColorToggle();
   }
 

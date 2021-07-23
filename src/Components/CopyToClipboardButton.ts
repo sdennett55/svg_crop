@@ -1,7 +1,7 @@
-import {copyToClipboard} from '../utilities';
+import { copyToClipboard } from '../utilities';
 
 class CopyToClipboardButton {
-  constructor(svg, filename) {
+  constructor(public svg: SVGElement, public filename: string) {
     this.svg = svg;
     this.filename = filename;
 
@@ -9,8 +9,8 @@ class CopyToClipboardButton {
   }
 
   addCopyToClipboardButton() {
-    const buttonWrapElem = document.querySelector('.ButtonWrap');
-    const buttonElem = document.createElement('button');
+    const buttonWrapElem = document.querySelector('.ButtonWrap') as HTMLElement;
+    const buttonElem = document.createElement('button') as HTMLButtonElement;
     buttonElem.textContent = 'Copy to clipboard';
     buttonElem.classList.add('CopyButton');
     buttonElem.addEventListener('click', copyToClipboard);

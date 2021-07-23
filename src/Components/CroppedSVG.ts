@@ -1,6 +1,5 @@
-// USER: Set either a width OR height (will scale evenly)
-const WIDTH = null;
-const HEIGHT = null;
+// @ts-nocheck
+
 const invisibleElems = [
   'defs',
   'g',
@@ -11,8 +10,17 @@ const invisibleElems = [
   'desc',
 ];
 
+interface Coords {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+}
+
 class CroppedSVG {
-  constructor(svg, filename, width, height) {
+  coords: Coords;
+
+  constructor(public svg: SVGElement, public filename: string, public width: number, public height: number) {
     this.width = width;
     this.height = height;
     this.filename = filename;
@@ -24,7 +32,7 @@ class CroppedSVG {
     };
     this.svg = svg;
 
-    this.render(this.svg);
+    this.render();
   }
 
   removeAttributes() {
@@ -33,8 +41,8 @@ class CroppedSVG {
     this.svg.removeAttribute('height');
   }
 
-  filterSVGToVisibleElements(svg) {
-    function flatten(ops, n) {
+  filterSVGToVisibleElements(svg: SVGElement) {
+    function flatten(ops: SVGElement[], n: SVGElement) {
       ops.push(n);
       if (n.childNodes && n.childNodes.length) {
         [].reduce.call(n.childNodes, flatten, ops);
@@ -42,14 +50,15 @@ class CroppedSVG {
       return ops;
     }
 
-    const result = [svg].reduce(flatten, []).filter((elem) => {
+    const result = [svg].reduce(flatten, []).filter((elem: SVGElement) => {
+      const parentElement = elem.parentElement as HTMLElement;
       return (
         elem.tagName &&
         !invisibleElems.includes(elem.tagName) &&
         (elem.getBoundingClientRect().width ||
           elem.getBoundingClientRect().height) &&
-        !elem.parentElement.hasAttribute('mask') &&
-        elem.parentElement.tagName !== 'defs' &&
+        !parentElement.hasAttribute('mask') &&
+        parentElement.tagName !== 'defs' &&
         (getComputedStyle(elem).stroke !== 'none' ||
           getComputedStyle(elem).fill !== 'none')
       );
@@ -69,7 +78,7 @@ class CroppedSVG {
 
       const stroke = getComputedStyle(x)['stroke'];
       const strokeWidth = Number(
-        getComputedStyle(x)['stroke-width'].replace('px', '')
+        getComputedStyle(x).strokeWidth.replace('px', '')
       );
 
       if (stroke !== 'none') {
@@ -94,8 +103,8 @@ class CroppedSVG {
     });
   }
 
-  static formatViewBoxNum(num) {
-    return num.toFixed(2) * 1;
+  static formatViewBoxNum(num: number) {
+    return Number(num.toFixed(2)) * 1;
   }
 
   setNewAttributes() {
@@ -110,20 +119,13 @@ class CroppedSVG {
       )} ${CroppedSVG.formatViewBoxNum(this.coords.bottom - this.coords.top)}`
     );
 
-    this.svg.parentElement.classList.add('is-showingSvg');
-
-    if (WIDTH) {
-      this.svg.setAttribute('width', WIDTH);
-      this.svg.removeAttribute('height');
-    } else if (HEIGHT) {
-      this.svg.setAttribute('height', HEIGHT);
-      this.svg.removeAttribute('width');
-    }
+    (this.svg.parentElement as HTMLElement).classList.add('is-showingSvg');
   }
 
   addSvg() {
-    function handleImageEnhance(e) {
-      e.target.classList.toggle('is-enhanced');
+    function handleImageEnhance(e: Event) {
+      const target = e.target as HTMLElement;
+      target.classList.toggle('is-enhanced');
     }
 
     // Add SVG to the screen inside the enhance button
@@ -131,7 +133,7 @@ class CroppedSVG {
     enhanceBtn.classList.add('EnhanceButton');
     enhanceBtn.addEventListener('click', handleImageEnhance);
     enhanceBtn.appendChild(this.svg);
-    const previewSectionElem = document.querySelector('.PreviewSection');
+    const previewSectionElem = document.querySelector('.PreviewSection') as HTMLElement;
     previewSectionElem.appendChild(enhanceBtn);
   }
 

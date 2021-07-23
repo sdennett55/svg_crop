@@ -4,7 +4,6 @@ import MultipleDownloadButton from './Components/MultipleDownloadButton';
 import CopyToClipboardButton from './Components/CopyToClipboardButton';
 import ColorToggleButton from './Components/ColorToggleButton';
 import CopyInput from './Components/ColorInput';
-import ErrorMessage from './Components/ErrorMessage';
 
 function cleanUpElements() {
   document.querySelector('.PreviewSection').innerHTML = '';
@@ -43,6 +42,8 @@ async function prepareFilesForDownload(files, eventLabel) {
         filesNotSVG.push(file.name);
       }
     }
+
+    const {default: ErrorMessage} = await import('./Components/ErrorMessage');
 
     if (fileCount > 1) {
       if (fileCount !== filesNotSVG.length) {

@@ -1,8 +1,10 @@
 import {prepareFilesForDownload} from '../utilities';
 
 class DropZone {
+  dropZone: HTMLElement;
+
   constructor() {
-    this.dropZone = document.querySelector('#drop_zone');
+    this.dropZone = document.querySelector('#drop_zone') as HTMLElement;
     this.dropZone.addEventListener('dragover', this.dragOverHandler.bind(this));
     this.dropZone.addEventListener(
       'dragleave',
@@ -11,20 +13,20 @@ class DropZone {
     this.dropZone.addEventListener('drop', this.dropHandler.bind(this));
   }
 
-  dragOverHandler(ev) {
-    ev.preventDefault();
+  dragOverHandler(e: DragEvent) {
+    e.preventDefault();
     this.dropZone.classList.add('is-hovered');
   }
 
-  dragLeaveHandler(ev) {
-    ev.preventDefault();
+  dragLeaveHandler(e: DragEvent) {
+    e.preventDefault();
     this.dropZone.classList.remove('is-hovered');
   }
 
-  async dropHandler(ev) {
-    ev.preventDefault();
+  async dropHandler(e: DragEvent) {
+    e.preventDefault();
     this.dropZone.classList.remove('is-hovered');
-    prepareFilesForDownload(ev.dataTransfer.files, 'uploaded SVG via drop');
+    prepareFilesForDownload(e.dataTransfer?.files, 'uploaded SVG via drop');
   }
 }
 

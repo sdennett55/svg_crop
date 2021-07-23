@@ -1,8 +1,9 @@
 import './ErrorMessage.css';
 
 class ErrorMessage {
-  constructor(message) {
-    this.message = message;
+  errorElem: HTMLElement | null;
+
+  constructor(public message: string) {
     this.errorElem = null;
 
     this.render();

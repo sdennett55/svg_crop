@@ -1,5 +1,5 @@
 class CopyInput {
-  constructor(svg, filename) {
+  constructor(public svg: SVGElement, public filename: string) {
     this.svg = svg;
     this.filename = filename;
 
@@ -11,7 +11,7 @@ class CopyInput {
     copyInput.classList.add('CopyInput');
     copyInput.setAttribute('aria-hidden', '');
     copyInput.value = this.svg.outerHTML;
-    const mainElement = document.querySelector('.MainContent');
+    const mainElement = document.querySelector('.MainContent') as HTMLElement;
     mainElement.appendChild(copyInput);
   }
 }

@@ -1,5 +1,5 @@
 class DownloadButton {
-  constructor(svg, filename) {
+  constructor(public svg: Node, public filename: string) {
     this.svg = svg;
     this.filename = filename;
 
@@ -29,7 +29,7 @@ class DownloadButton {
       `${this.filename.replace('.svg', '')}-cropped.svg`
     );
     a.textContent = 'Download';
-    const buttonWrapElem = document.querySelector('.ButtonWrap');
+    const buttonWrapElem = document.querySelector('.ButtonWrap') as HTMLElement;
     buttonWrapElem.appendChild(a);
   }
 }
