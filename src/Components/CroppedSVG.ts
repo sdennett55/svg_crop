@@ -18,7 +18,7 @@ interface Coords {
 class CroppedSVG {
   coords: Coords;
 
-  constructor(public svg: SVGElement, public filename: string, public width: number, public height: number) {
+  constructor(public svg: SVGElement, public filename: string, public width?: number, public height?: number) {
     this.width = width;
     this.height = height;
     this.filename = filename;

@@ -359,6 +359,28 @@ a[download]:disabled:focus {
   background-color: #66b0ae;
 }
 
+.MarkupInput {
+  display: none;
+  height: 29px;
+  border-radius: 4px;
+  margin: 10px auto;
+}
+.MarkupButton {
+  font: inherit;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #a43365;
+  font-weight: 700;
+}
+.MarkupButton:hover,
+.MarkupButton:focus {
+  text-decoration: underline;
+}
+
 .Footer {
   width: 100%;
   background-color: #2d2a2a;

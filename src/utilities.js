@@ -34,7 +34,7 @@ async function prepareFilesForDownload(files, eventLabel) {
             svg: croppedSvg.svg,
             filename: croppedSvg.filename,
           });
-          gtag('event', eventLabel, {event_label: file.name});
+          gtag('event', eventLabel, { event_label: file.name });
         } catch {
           filesNotSVG.push(file.name);
         }
@@ -43,7 +43,7 @@ async function prepareFilesForDownload(files, eventLabel) {
       }
     }
 
-    const {default: ErrorMessage} = await import('./Components/ErrorMessage');
+    const { default: ErrorMessage } = await import('./Components/ErrorMessage');
 
     if (fileCount > 1) {
       if (fileCount !== filesNotSVG.length) {
@@ -69,6 +69,36 @@ async function prepareFilesForDownload(files, eventLabel) {
       new CopyToClipboardButton(modifiedSvg, filename);
     }
   }
+}
+
+function isSvgElement(markup) {
+  const noSpacesString = markup.replace(/\s/g, "");
+  return noSpacesString.match('<svg') && noSpacesString.match('</svg>');
+}
+
+async function prepareMarkupForDownload(markup, eventLabel) {
+  if (!markup.trim() || !isSvgElement(markup)) {
+    return;
+  }
+
+  cleanUpElements();
+
+  let filename = 'markup';
+
+  document.querySelector('.PreviewSection').innerHTML = markup;
+  const modifiedSvg = document?.querySelector('.PreviewSection > svg');
+
+  if (!modifiedSvg) {
+    return;
+  }
+
+  new CroppedSVG(modifiedSvg, filename);
+  gtag('event', eventLabel, { event_label: filename });
+
+  new CopyInput(modifiedSvg, filename);
+  new ColorToggleButton(modifiedSvg, filename);
+  new DownloadButton(modifiedSvg, filename);
+  new CopyToClipboardButton(modifiedSvg, filename);
 }
 
 async function handleFile(file) {
@@ -117,4 +147,4 @@ function copyToClipboard() {
   }
 }
 
-export {prepareFilesForDownload, cleanUpElements, copyToClipboard};
+export { prepareFilesForDownload, prepareMarkupForDownload, cleanUpElements, copyToClipboard };

@@ -6,7 +6,9 @@
     "strict": true,
     "watch": true,
   },
-  "include": ["./src/**/*"],
+  "include": [
+    "./src/**/*"
+  ],
   "files": [
     "./src/Components/ColorToggleButton.ts",
     "./src/Components/ColorInput.ts",
@@ -16,6 +18,7 @@
     "./src/Components/DropZone.ts",
     "./src/Components/ErrorMessage.ts",
     "./src/Components/FileInput.ts",
-    "./src/Components/MultipleDownloadButton.ts"
+    "./src/Components/MultipleDownloadButton.ts",
+    "./src/Components/PasteMarkupInput.ts"
   ]
 }
